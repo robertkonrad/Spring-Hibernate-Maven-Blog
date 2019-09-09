@@ -6,9 +6,12 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/blog</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/blog?useSSL=false&amp;serverTimezone=UTC</property>
     <property name="hibernate.connection.username">blogadmin</property>
     <property name="hibernate.connection.password">blogadmin</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="show_sql">true</property>
+    
+    <mapping class="com.robertkonrad.blog.entity.Post"/>
   </session-factory>
 </hibernate-configuration>
