@@ -18,9 +18,20 @@ public class PostDAOImpl implements PostDAO {
 		
 		List<Post> posts = session.createQuery("FROM Post", Post.class).getResultList();
 		
-//		session.getTransaction().commit();
-		HibernateUtil.shutdown();
+		session.getTransaction().commit();
+		
 		return posts;
+	}
+
+	@Override
+	public void deletePost(int postId) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Post post = session.get(Post.class, postId);
+		session.delete(post);
+		
+		session.getTransaction().commit();
 	}
 
 }

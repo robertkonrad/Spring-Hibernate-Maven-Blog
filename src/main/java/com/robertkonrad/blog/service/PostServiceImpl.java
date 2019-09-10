@@ -22,4 +22,9 @@ public class PostServiceImpl implements PostService {
 		return postDAO.getPosts();
 	}
 
+	@Override
+	public void deletePost(int postId) {
+		postDAO.deletePost(postId);
+	}
+
 }

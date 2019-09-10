@@ -74,6 +74,12 @@
 	  <artifactId>hibernate-core</artifactId>
 	  <version>${hibernate.core.version}</version>
 	</dependency>
+	
+	<dependency>
+	  <groupId>org.hibernate</groupId>
+	  <artifactId>hibernate-c3p0</artifactId>
+	  <version>${hibernate.core.version}</version>
+	</dependency>
     
   </dependencies>
   
