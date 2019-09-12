@@ -15,7 +15,7 @@ public class Post {
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name = "title")
@@ -31,13 +31,13 @@ public class Post {
 	private Date createdDate;
 	
 	@Column(name = "last_modificated")
-	private String lastModificated;
+	private Date lastModificated;
 	
 	public Post() {
 		
 	}
 
-	public Post(int id, String title, String description, int author, Date createdDate, String lastModificated) {
+	public Post(int id, String title, String description, int author, Date createdDate, Date lastModificated) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -87,11 +87,11 @@ public class Post {
 		this.createdDate = createdDate;
 	}
 
-	public String getLastModificated() {
+	public Date getLastModificated() {
 		return lastModificated;
 	}
 
-	public void setLastModificated(String lastModificated) {
+	public void setLastModificated(Date lastModificated) {
 		this.lastModificated = lastModificated;
 	}
 

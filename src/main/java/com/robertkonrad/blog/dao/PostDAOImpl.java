@@ -1,5 +1,6 @@
 package com.robertkonrad.blog.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -32,6 +33,41 @@ public class PostDAOImpl implements PostDAO {
 		session.delete(post);
 		
 		session.getTransaction().commit();
+	}
+
+	@Override
+	public void savePost(Post post) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		if (post.getId() == 0) {
+			Date createdDate = new Date();
+			post.setCreatedDate(createdDate);
+			post.setLastModificated(createdDate);
+			post.setAuthor(1);
+		} else {
+			Post orginalPost = getPost(post.getId());
+			post.setAuthor(orginalPost.getAuthor());
+			post.setCreatedDate(orginalPost.getCreatedDate());
+			Date lastModificated = new Date();
+			post.setLastModificated(lastModificated);
+		}
+		
+		session.saveOrUpdate(post);
+		
+		session.getTransaction().commit();
+	}
+
+	@Override
+	public Post getPost(int postId) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		Post post = session.get(Post.class, postId);
+		
+		session.getTransaction().commit();
+		
+		return post;
 	}
 
 }
