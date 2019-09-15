@@ -22,6 +22,7 @@
   	<jstl.version>1.2</jstl.version>
   	<mysql.connector.java.version>8.0.17</mysql.connector.java.version>
   	<hibernate.core.version>5.4.4.Final</hibernate.core.version>
+  	<spring.security.version>5.1.6.RELEASE</spring.security.version>
   </properties>
   
   <dependencies>
@@ -79,6 +80,24 @@
 	  <groupId>org.hibernate</groupId>
 	  <artifactId>hibernate-c3p0</artifactId>
 	  <version>${hibernate.core.version}</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>org.springframework.security</groupId>
+	  <artifactId>spring-security-web</artifactId>
+	  <version>${spring.security.version}</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>org.springframework.security</groupId>
+	  <artifactId>spring-security-config</artifactId>
+	  <version>${spring.security.version}</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>org.springframework.security</groupId>
+	  <artifactId>spring-security-taglibs</artifactId>
+	  <version>${spring.security.version}</version>
 	</dependency>
     
   </dependencies>

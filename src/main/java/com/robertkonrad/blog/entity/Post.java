@@ -25,7 +25,7 @@ public class Post {
 	private String description;
 	
 	@Column(name = "author")
-	private int author;
+	private String author;
 	
 	@Column(name = "created_date")
 	private Date createdDate;
@@ -37,7 +37,7 @@ public class Post {
 		
 	}
 
-	public Post(int id, String title, String description, int author, Date createdDate, Date lastModificated) {
+	public Post(int id, String title, String description, String author, Date createdDate, Date lastModificated) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -71,11 +71,11 @@ public class Post {
 		this.description = description;
 	}
 
-	public int getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(int author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 

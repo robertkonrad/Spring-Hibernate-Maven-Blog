@@ -44,7 +44,7 @@ public class PostDAOImpl implements PostDAO {
 			Date createdDate = new Date();
 			post.setCreatedDate(createdDate);
 			post.setLastModificated(createdDate);
-			post.setAuthor(1);
+			post.setAuthor("test");
 		} else {
 			Post orginalPost = getPost(post.getId());
 			post.setAuthor(orginalPost.getAuthor());

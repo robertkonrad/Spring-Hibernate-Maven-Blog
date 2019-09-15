@@ -1,11 +1,33 @@
 <%@ page language="java" contentType="text/html"%> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <body>
 <h1>List of posts soon...</h1>
 
+<br>
 <a href="formPost">Create new post</a>
+<br>
+
+
+
+<br>
+User: <security:authentication property="principal.username"/>
+<br>
+Role: <security:authentication property="principal.authorities"/>
+<br>
+	
+<br>
+<form:form action="${pageContext.request.contextPath}/logout" method="POST">
+
+	<input type="submit" value="Logout"/>
+	
+</form:form>
+<br>
+
+
 
 <table>
 	<tr>
