@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import com.robertkonrad.blog.entity.Post;
@@ -40,11 +42,14 @@ public class PostDAOImpl implements PostDAO {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 		
+		
 		if (post.getId() == 0) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
 			Date createdDate = new Date();
 			post.setCreatedDate(createdDate);
 			post.setLastModificated(createdDate);
-			post.setAuthor("test");
+			post.setAuthor(auth.getName());
 		} else {
 			Post orginalPost = getPost(post.getId());
 			post.setAuthor(orginalPost.getAuthor());

@@ -7,33 +7,35 @@
 <body>
 <h1>List of posts soon...</h1>
 
+<security:authorize access="isAuthenticated()">
+
 <br>
 <a href="formPost">Create new post</a>
 <br>
-
-
 
 <br>
 User: <security:authentication property="principal.username"/>
 <br>
 Role: <security:authentication property="principal.authorities"/>
 <br>
-	
+
 <br>
 <form:form action="${pageContext.request.contextPath}/logout" method="POST">
-
 	<input type="submit" value="Logout"/>
-	
 </form:form>
 <br>
 
+</security:authorize>
 
 
 <table>
 	<tr>
 		<th>Title</th>
 		<th>Description</th>
-		<th>Actions</th>
+		<th>Author</th>
+		<security:authorize access="isAuthenticated()">
+			<th>Actions</th>
+		</security:authorize>
 	</tr>
 	
 	<c:forEach var="tempPost" items="${posts}">
@@ -48,9 +50,12 @@ Role: <security:authentication property="principal.authorities"/>
 		<tr>
 			<td>${tempPost.title}</td>
 			<td>${tempPost.description}</td>
-			<td><a href="${deletePost}" 
-			onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">Delete</a>
-			 | <a href="${updatePost}">Update</a></td>
+			<td>${tempPost.author}</td>
+			<security:authorize access="isAuthenticated()">
+				<td><a href="${deletePost}" 
+				onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">Delete</a>
+				 | <a href="${updatePost}">Update</a></td>
+			 </security:authorize>
 		</tr>
 	</c:forEach>
 
