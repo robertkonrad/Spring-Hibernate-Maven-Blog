@@ -5,26 +5,35 @@
 
 <html>
 <body>
-<h1>List of posts soon...</h1>
+<h1>List of posts</h1>
 
 <security:authorize access="isAuthenticated()">
 
-<br>
-<a href="formPost">Create new post</a>
-<br>
+	<br>
+	<a href="formPost">Create new post</a>
+	<br>
+	
+	<br>
+	User: <security:authentication property="principal.username"/>
+	<br>
+	Role: <security:authentication property="principal.authorities"/>
+	<br>
+	
+	<br>
+	<form:form action="${pageContext.request.contextPath}/logout" method="POST">
+		<input type="submit" value="Logout"/>
+	</form:form>
+	<br>
 
-<br>
-User: <security:authentication property="principal.username"/>
-<br>
-Role: <security:authentication property="principal.authorities"/>
-<br>
+</security:authorize>
 
-<br>
-<form:form action="${pageContext.request.contextPath}/logout" method="POST">
-	<input type="submit" value="Logout"/>
-</form:form>
-<br>
-
+<security:authorize access="!isAuthenticated()">
+	<form:form action="${pageContext.request.contextPath}/loginPage" method="POST">
+		<input type="submit" value="Log in"/>
+	</form:form>
+	<form:form action="${pageContext.request.contextPath}/formUser" method="POST">
+		<input type="submit" value="Sign in"/>
+	</form:form>
 </security:authorize>
 
 

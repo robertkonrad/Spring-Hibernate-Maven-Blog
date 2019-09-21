@@ -4,15 +4,22 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.robertkonrad.blog.entity.Post;
+import com.robertkonrad.blog.entity.Role;
+import com.robertkonrad.blog.entity.User;
 import com.robertkonrad.blog.util.HibernateUtil;
 
 @Repository
 public class PostDAOImpl implements PostDAO {
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public List<Post> getPosts() {
@@ -73,6 +80,24 @@ public class PostDAOImpl implements PostDAO {
 		session.getTransaction().commit();
 		
 		return post;
+	}
+
+	@Override
+	public void saveUser(User user) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setEnabled(1);
+		
+		Role role = new Role();
+		role.setAuthority("USER");
+		role.setUsername(user.getUsername());
+		
+		session.save(user);
+		session.save(role);
+		
+		session.getTransaction().commit();
 	}
 
 }

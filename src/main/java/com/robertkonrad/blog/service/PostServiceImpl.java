@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.robertkonrad.blog.dao.PostDAO;
 import com.robertkonrad.blog.entity.Post;
+import com.robertkonrad.blog.entity.User;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -35,6 +36,11 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post getPost(int postId) {
 		return postDAO.getPost(postId);
+	}
+
+	@Override
+	public void saveUser(User user) {
+		postDAO.saveUser(user);
 	}
 
 }
