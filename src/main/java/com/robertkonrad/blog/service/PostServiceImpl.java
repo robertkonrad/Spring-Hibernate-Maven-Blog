@@ -16,12 +16,6 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostDAO postDAO;
-	
-	@Override
-	@Transactional
-	public List<Post> getPosts() {
-		return postDAO.getPosts();
-	}
 
 	@Override
 	public void deletePost(int postId) {
@@ -41,6 +35,16 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void saveUser(User user) {
 		postDAO.saveUser(user);
+	}
+
+	@Override
+	public List<Post> getPostsByPage(int page, int postsOnOnePage) {
+		return postDAO.getPostsByPage(page, postsOnOnePage);
+	}
+
+	@Override
+	public int getNumberOfAllPosts() {
+		return postDAO.getNumberOfAllPosts();
 	}
 
 }

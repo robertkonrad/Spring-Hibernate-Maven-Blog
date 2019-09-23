@@ -8,7 +8,6 @@
 <h1>List of posts</h1>
 
 <security:authorize access="isAuthenticated()">
-
 	<br>
 	<a href="formPost">Create new post</a>
 	<br>
@@ -24,7 +23,6 @@
 		<input type="submit" value="Logout"/>
 	</form:form>
 	<br>
-
 </security:authorize>
 
 <security:authorize access="!isAuthenticated()">
@@ -67,9 +65,13 @@
 			 </security:authorize>
 		</tr>
 	</c:forEach>
-
-
 </table>
+
+<ul>
+	<c:forEach var="i" begin="1" end="${pages}">
+		<li><a href="${pageContext.request.contextPath}/${i}"><c:out value="${i}"></c:out></a></li>
+	</c:forEach>
+</ul>
 
 </body>
 </html>

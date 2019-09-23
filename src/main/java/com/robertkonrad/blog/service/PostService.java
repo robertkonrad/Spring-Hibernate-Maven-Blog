@@ -6,8 +6,6 @@ import com.robertkonrad.blog.entity.Post;
 import com.robertkonrad.blog.entity.User;
 
 public interface PostService {
-	public List<Post> getPosts();
-
 	public void deletePost(int postId);
 
 	public void savePost(Post post);
@@ -15,4 +13,8 @@ public interface PostService {
 	public Post getPost(int postId);
 
 	public void saveUser(User user);
+
+	public List<Post> getPostsByPage(int page, int postsOnOnePage);
+
+	public int getNumberOfAllPosts();
 }

@@ -22,18 +22,6 @@ public class PostDAOImpl implements PostDAO {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public List<Post> getPosts() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		
-		List<Post> posts = session.createQuery("FROM Post", Post.class).getResultList();
-		
-		session.getTransaction().commit();
-		
-		return posts;
-	}
-
-	@Override
 	public void deletePost(int postId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -98,6 +86,41 @@ public class PostDAOImpl implements PostDAO {
 		session.save(role);
 		
 		session.getTransaction().commit();
+	}
+
+	@Override
+	public List<Post> getPostsByPage(int page, int postsOnOnePage) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		int minRowNum;
+		
+		if (page == 1) {
+			minRowNum = 0;
+		} else {
+			minRowNum = (page - 1) * 10;
+		}
+		
+		List<Post> posts = session.createQuery("FROM Post", Post.class)
+				.setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
+				.getResultList();
+		
+		session.getTransaction().commit();
+		
+		return posts;
+	}
+
+	@Override
+	public int getNumberOfAllPosts() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		List<Post> posts = session.createQuery("FROM Post", Post.class).getResultList();
+		int numberOfAllPosts = posts.size();
+		
+		session.getTransaction().commit();
+		
+		return numberOfAllPosts;
 	}
 
 }
