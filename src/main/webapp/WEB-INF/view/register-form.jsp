@@ -11,7 +11,7 @@
 <body>
 <h1>Register form</h1>
 
-<form:form action="saveUser" method="post" modelAttribute="user">
+<form:form action="${pageContext.request.contextPath}/user/save" method="post" modelAttribute="user">
 	<table>
 		<tr>
 			<td>Username:</td>

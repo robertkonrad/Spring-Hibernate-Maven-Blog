@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <body>
@@ -9,7 +10,7 @@
 
 <security:authorize access="isAuthenticated()">
 	<br>
-	<a href="formPost">Create new post</a>
+	<a href="${pageContext.request.contextPath}/post/form">Create new post</a>
 	<br>
 	
 	<br>
@@ -26,10 +27,10 @@
 </security:authorize>
 
 <security:authorize access="!isAuthenticated()">
-	<form:form action="${pageContext.request.contextPath}/loginPage" method="POST">
+	<form:form action="${pageContext.request.contextPath}/login" method="POST">
 		<input type="submit" value="Log in"/>
 	</form:form>
-	<form:form action="${pageContext.request.contextPath}/formUser" method="POST">
+	<form:form action="${pageContext.request.contextPath}/user/form" method="POST">
 		<input type="submit" value="Sign in"/>
 	</form:form>
 </security:authorize>
@@ -46,13 +47,9 @@
 	</tr>
 	
 	<c:forEach var="tempPost" items="${posts}">
-		<c:url var="deletePost" value="/deletePost">
-			<c:param name="postId" value="${tempPost.id}"></c:param>
-		</c:url>
+		<spring:url value="/post/delete/${tempPost.id}" var="deletePost"/>
 		
-		<c:url var="updatePost" value="/updatePost">
-			<c:param name="postId" value="${tempPost.id}"></c:param>
-		</c:url>
+		<spring:url value="/post/update/${tempPost.id}" var="updatePost"/>
 	
 		<tr>
 			<td>${tempPost.title}</td>
@@ -69,7 +66,7 @@
 
 <ul>
 	<c:forEach var="i" begin="1" end="${pages}">
-		<li><a href="${pageContext.request.contextPath}/${i}"><c:out value="${i}"></c:out></a></li>
+		<li><a href="${pageContext.request.contextPath}/page/${i}"><c:out value="${i}"></c:out></a></li>
 	</c:forEach>
 </ul>
 

@@ -10,7 +10,7 @@
 	
 	<h2>Login</h2>
 	
-	<form:form action="${pageContext.request.contextPath}/authenticateUser" method="POST">
+	<form:form action="${pageContext.request.contextPath}/authenticate" method="POST">
 	
 		<c:if test="${param.error != null}">
 			<i>Invalid username/password.</i>

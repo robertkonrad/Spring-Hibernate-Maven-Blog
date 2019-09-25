@@ -15,17 +15,17 @@ public class RegistrationController {
 	@Autowired
 	private PostService postService;
 
-	@RequestMapping("/formUser")
+	@RequestMapping("/user/form")
 	public String register_form(Model theModel) {
 		User user = new User();
 		theModel.addAttribute("user", user);
 		return "register-form";
 	}
 	
-	@RequestMapping("/saveUser")
+	@RequestMapping("/user/save")
 	public String save_user(@ModelAttribute("user") User user) {
 		postService.saveUser(user);
-		return "redirect:/";
+		return "redirect:/login";
 	}
 	
 	

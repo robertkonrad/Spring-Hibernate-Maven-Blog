@@ -11,7 +11,7 @@
 <body>
 <h1>Post form</h1>
 
-<form:form action="savePost" method="post" modelAttribute="post">
+<form:form action="${pageContext.request.contextPath}/post/save" method="post" modelAttribute="post">
     <form:hidden path="id" />
 	<table>
 		<tr>
