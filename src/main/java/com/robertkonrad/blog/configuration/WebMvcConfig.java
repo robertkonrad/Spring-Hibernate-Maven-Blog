@@ -1,93 +1,17 @@
 package com.robertkonrad.blog.configuration;
 
-import java.beans.PropertyVetoException;
-
-import javax.sql.DataSource;
-
-import org.jboss.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
-@EnableWebMvc
-@ComponentScan(basePackages = {"com.robertkonrad.blog"})
-@PropertySource("classpath:db.properties")
-public class WebMvcConfig implements WebMvcConfigurer{
-	
-	@Autowired
-	private Environment env;
-	
-	private Logger logger = Logger.getLogger(getClass().getName());
+public class WebMvcConfig implements WebMvcConfigurer {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
-	
-	@Bean
-	public InternalResourceViewResolver resolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-	      resolver.setViewClass(JstlView.class);
-	      resolver.setPrefix("/WEB-INF/view/");
-	      resolver.setSuffix(".jsp");
-	      return resolver;
-	}
-	
-	@Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-            .addResourceHandler("/resources/**")
-            .addResourceLocations("/resources/");
-    }
-	
-	@Bean
-	public DataSource securityDataSource() {
-		ComboPooledDataSource securityDataSource = new ComboPooledDataSource();
-		
-		try {
-			securityDataSource.setDriverClass(env.getProperty("jdbc.driver"));
-		} catch (PropertyVetoException exc) {
-			throw new RuntimeException(exc);
-		}
-		
-		logger.info(">>>jdbc.url=" + env.getProperty("jdbc.url"));
-		logger.info(">>>jdbc.user=" + env.getProperty("jdbc.user"));
-		
-		securityDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
-		securityDataSource.setUser(env.getProperty("jdbc.user"));
-		securityDataSource.setPassword(env.getProperty("jdbc.password"));
-		
-		securityDataSource.setInitialPoolSize(getIntProperty("connection.pool.initialPoolSize"));
-		securityDataSource.setMinPoolSize(getIntProperty("connection.pool.minPoolSize"));
-		securityDataSource.setMaxPoolSize(getIntProperty("connection.pool.maxPoolSize"));
-		securityDataSource.setMaxIdleTime(getIntProperty("connection.pool.maxIdleTime"));
-		
-		return securityDataSource;
-	}
-	
-	private int getIntProperty(String propName) {
-		String propVal = env.getProperty(propName);
-		
-		int intPropVal = Integer.parseInt(propVal);
-		
-		return intPropVal;
-	}
+
 }
-
-
-
-
-

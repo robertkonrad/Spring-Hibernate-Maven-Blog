@@ -3,6 +3,9 @@ package com.robertkonrad.blog.dao;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,30 +16,33 @@ import org.springframework.stereotype.Repository;
 import com.robertkonrad.blog.entity.Post;
 import com.robertkonrad.blog.entity.Role;
 import com.robertkonrad.blog.entity.User;
-import com.robertkonrad.blog.util.HibernateUtil;
 
 @Repository
 public class PostDAOImpl implements PostDAO {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-	@Override
-	public void deletePost(int postId) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Post post = session.get(Post.class, postId);
-		session.delete(post);
-		
-		session.getTransaction().commit();
+	
+	private EntityManager entityManager;
+	
+	@Autowired
+	public PostDAOImpl(EntityManager theEntityManager) {
+		entityManager = theEntityManager;
 	}
 
+	@Transactional
+	@Override
+	public void deletePost(int postId) {
+		Session session = entityManager.unwrap(Session.class);
+
+		Post post = session.get(Post.class, postId);
+		session.delete(post);	
+	}
+
+	@Transactional
 	@Override
 	public void savePost(Post post) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		
+		Session session = entityManager.unwrap(Session.class);
 		
 		if (post.getId() == 0) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -53,27 +59,24 @@ public class PostDAOImpl implements PostDAO {
 			post.setLastModificated(lastModificated);
 		}
 		
-		session.saveOrUpdate(post);
-		
-		session.getTransaction().commit();
+		session.merge(post);
+
 	}
 
+	@Transactional
 	@Override
 	public Post getPost(int postId) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+		Session session = entityManager.unwrap(Session.class);
 		
 		Post post = session.get(Post.class, postId);
-		
-		session.getTransaction().commit();
 		
 		return post;
 	}
 
+	@Transactional
 	@Override
 	public void saveUser(User user) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+		Session session = entityManager.unwrap(Session.class);
 		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(1);
@@ -83,18 +86,17 @@ public class PostDAOImpl implements PostDAO {
 		role.setUsername(user.getUsername());
 		
 		session.save(user);
-		session.save(role);
-		
-		session.getTransaction().commit();
+		session.save(role);	
 	}
 
+	@Transactional
 	@Override
 	public List<Post> getPostsByPage(int page, int postsOnOnePage) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+		
+		Session session = entityManager.unwrap(Session.class);
 		
 		int minRowNum;
-		
+
 		if (page == 1) {
 			minRowNum = 0;
 		} else {
@@ -105,20 +107,16 @@ public class PostDAOImpl implements PostDAO {
 				.setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
 				.getResultList();
 		
-		session.getTransaction().commit();
-		
 		return posts;
 	}
 
+	@Transactional
 	@Override
 	public int getNumberOfAllPosts() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+		Session session = entityManager.unwrap(Session.class);
 		
 		List<Post> posts = session.createQuery("FROM Post", Post.class).getResultList();
 		int numberOfAllPosts = posts.size();
-		
-		session.getTransaction().commit();
 		
 		return numberOfAllPosts;
 	}
