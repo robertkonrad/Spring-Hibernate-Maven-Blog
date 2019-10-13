@@ -26,9 +26,8 @@ public class Role {
 		
 	}
 
-	public Role(int id, String authority, String username) {
+	public Role(String authority, String username) {
 		super();
-		this.id = id;
 		this.authority = authority;
 		this.username = username;
 	}

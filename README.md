@@ -7,6 +7,7 @@ Simple blog application.
 * Spring Framework
 * SpringBoot
 * Hibernate
+* Maven
 
 ## How to run
 

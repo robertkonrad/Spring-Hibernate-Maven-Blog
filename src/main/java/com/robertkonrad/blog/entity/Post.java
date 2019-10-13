@@ -37,9 +37,8 @@ public class Post {
 		
 	}
 
-	public Post(int id, String title, String description, String author, Date createdDate, Date lastModificated) {
+	public Post(String title, String description, String author, Date createdDate, Date lastModificated) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.author = author;
