@@ -2,12 +2,19 @@ package com.robertkonrad.blog.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "post", schema = "blog")
@@ -18,18 +25,26 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@NotNull
+	@Size(max = 100)
 	@Column(name = "title")
 	private String title;
 	
+	@NotNull
+	@Size(max = 255)
 	@Column(name = "description")
 	private String description;
 	
-	@Column(name = "author")
-	private String author;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "author")
+	private User author;
 	
+	@NotNull
 	@Column(name = "created_date")
 	private Date createdDate;
 	
+	@NotNull
 	@Column(name = "last_modificated")
 	private Date lastModificated;
 	
@@ -37,7 +52,7 @@ public class Post {
 		
 	}
 
-	public Post(String title, String description, String author, Date createdDate, Date lastModificated) {
+	public Post(String title, String description, User author, Date createdDate, Date lastModificated) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -70,11 +85,11 @@ public class Post {
 		this.description = description;
 	}
 
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(User author) {
 		this.author = author;
 	}
 

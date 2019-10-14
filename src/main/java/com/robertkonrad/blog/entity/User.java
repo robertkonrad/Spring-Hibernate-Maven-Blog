@@ -1,9 +1,17 @@
 package com.robertkonrad.blog.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", schema = "blog")
@@ -13,11 +21,20 @@ public class User {
 	@Column(name = "username")
 	private String username;
 	
+	@Size(max = 68)
+	@NotNull
 	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "enabled")
-	private int enabled; 
+	@NotNull
+	@Column(name = "enabled", columnDefinition = "integer default 1")
+	private int enabled = 1; 
+	
+	@OneToOne(mappedBy = "username", cascade = CascadeType.ALL)
+	private Role role;
+	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	private List<Post> posts;
 	
 	public User() {
 		

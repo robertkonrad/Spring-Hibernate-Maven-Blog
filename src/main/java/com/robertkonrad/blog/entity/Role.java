@@ -1,11 +1,16 @@
 package com.robertkonrad.blog.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "authorities", schema = "blog")
@@ -16,20 +21,22 @@ public class Role {
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "authority")
-	private String authority;
+	@Column(name = "authority", columnDefinition = "varchar(255) default 'USER'")
+	private String authority = "USER";
 	
-	@Column(name = "username")
-	private String username;
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "username")
+	private User username;
 	
 	public Role() {
 		
 	}
-
-	public Role(String authority, String username) {
+	
+	public Role(String authority, User user) {
 		super();
 		this.authority = authority;
-		this.username = username;
+		this.username = user;
 	}
 
 	public int getId() {
@@ -48,18 +55,20 @@ public class Role {
 		this.authority = authority;
 	}
 
-	public String getUsername() {
+	public User getUser() {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser(User user) {
+		this.username = user;
 	}
 
 	@Override
 	public String toString() {
-		return "Role [id=" + id + ", authority=" + authority + ", username=" + username + "]";
+		return "Role [id=" + id + ", authority=" + authority + ", user=" + username + "]";
 	}
+
+	
 	
 	
 }

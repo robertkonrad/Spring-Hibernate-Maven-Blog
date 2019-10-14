@@ -46,11 +46,12 @@ public class PostDAOImpl implements PostDAO {
 		
 		if (post.getId() == 0) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			User user = session.createQuery("FROM User WHERE username='"+auth.getName()+"'", User.class).getSingleResult();
 			
 			Date createdDate = new Date();
 			post.setCreatedDate(createdDate);
 			post.setLastModificated(createdDate);
-			post.setAuthor(auth.getName());
+			post.setAuthor(user);
 		} else {
 			Post orginalPost = getPost(post.getId());
 			post.setAuthor(orginalPost.getAuthor());
@@ -79,11 +80,9 @@ public class PostDAOImpl implements PostDAO {
 		Session session = entityManager.unwrap(Session.class);
 		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setEnabled(1);
 		
 		Role role = new Role();
-		role.setAuthority("USER");
-		role.setUsername(user.getUsername());
+		role.setUser(user);
 		
 		session.save(user);
 		session.save(role);	

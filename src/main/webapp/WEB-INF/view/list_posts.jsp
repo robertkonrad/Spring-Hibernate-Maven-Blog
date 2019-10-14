@@ -54,7 +54,7 @@
 		<tr>
 			<td>${tempPost.title}</td>
 			<td>${tempPost.description}</td>
-			<td>${tempPost.author}</td>
+			<td>${tempPost.author.username}</td>
 			<security:authorize access="isAuthenticated()">
 				<td><a href="${deletePost}" 
 				onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">Delete</a>
