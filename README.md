@@ -8,6 +8,7 @@ Simple blog application.
 * SpringBoot
 * Hibernate
 * Maven
+* Thymeleaf
 
 ## How to run
 
