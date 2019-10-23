@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.robertkonrad.blog.entity.User;
-import com.robertkonrad.blog.service.PostService;
+import com.robertkonrad.blog.service.UserService;
 
 @Controller
 public class RegistrationController {
 	
 	@Autowired
-	private PostService postService;
+	private UserService userService;
 
 	@RequestMapping("/user/form")
 	public String register_form(Model theModel) {
@@ -24,7 +24,7 @@ public class RegistrationController {
 	
 	@RequestMapping("/user/save")
 	public String save_user(@ModelAttribute("user") User user) {
-		postService.saveUser(user);
+		userService.saveUser(user);
 		return "redirect:/login";
 	}
 	
