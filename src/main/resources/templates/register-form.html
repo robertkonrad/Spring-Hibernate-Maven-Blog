@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+ 	layout:decorate="~{layouts/main-layout}">
 <head>
 <meta charset="ISO-8859-1">
-<title></title>
+<title>Register Form Page</title>
 </head>
 <body>
-<h1>Register form</h1>
-
-<form th:action="@{/user/save}" method="post" th:object="${user}">
-	<table>
-		<tr>
-			<td>Username:</td>
-			<td><input type="text" th:field="*{username}"/></td>
-		</tr>
-
-		<tr>
-			<td>Password:</td>
-			<td><input type="password" th:field="*{password}"/></td>
-		</tr>
-		
-		<tr>
-			<td><input type="submit" value="Submit"></td>
-		</tr>
-	</table>
-</form>
-
+	<div layout:fragment="content">
+		<h1>Register form</h1>
+		<form th:action="@{/user/save}" method="post" th:object="${user}">
+			<table>
+				<tr>
+					<td>Username:</td>
+					<td><input type="text" th:field="*{username}"/></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><input type="password" th:field="*{password}"/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </body>
 </html>

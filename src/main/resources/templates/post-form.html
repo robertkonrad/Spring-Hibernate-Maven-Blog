@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+ 	layout:decorate="~{layouts/main-layout}">
 <head>
 <meta charset="ISO-8859-1">
-<title></title>
+<title>Post Form Page</title>
 </head>
 <body>
-<h1>Post form</h1>
-
-<form action="#" th:action="@{/post/save}" method="post" th:object="${post}">
-	<input type="hidden" th:field="*{id}">
-	<table>
-		<tr>
-			<td>Title:</td>
-			<td><input type="text" th:field="*{title}"/></td>
-		</tr>
-
-		<tr>
-			<td>Description:</td>
-			<td><input type="text" th:field="*{description}"/></td>
-		</tr>
-		
-		<tr>
-			<td><input type="submit" value="Submit"></td>
-		</tr>
-	</table>
-</form>
-
+	<div layout:fragment="content">
+		<h1>Post form</h1>
+		<form th:action="@{/post/save}" method="post" th:object="${post}">
+			<input type="hidden" th:field="*{id}">
+			<table>
+				<tr>
+					<td>Title:</td>
+					<td><input type="text" th:field="*{title}"/></td>
+				</tr>
+				<tr>
+					<td>Description:</td>
+					<td><input type="text" th:field="*{description}"/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </body>
 </html>

@@ -1,33 +1,24 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+ 	layout:decorate="~{layouts/main-layout}">
 <head>
 	<title>Login Page</title>
 </head>
 
 <body>
-	
-	<h2>Login</h2>
-	
-	<form th:action="@{/authenticate}" method="POST">
-	
-		<p th:if="${param.error != null}">
-			<i>Invalid username/password.</i>
-		
-		<p th:if="${param.logout != null}">
-			<i>You have been logged out.</i>
-	
-		<p>
-			Username: <input type="text" name="username"/>
-		</p>
-		
-		<p>
-			Password: <input type="password" name="password"/>
-		</p>
-		
-		<input type="submit" value="Login"/>
-	
-	</form>
-	
+	<div layout:fragment="content">
+		<h1>Login</h1>
+		<form th:action="@{/authenticate}" method="POST">
+			<p th:if="${param.error != null}">
+				<i>Invalid username/password.</i>
+			<p th:if="${param.logout != null}">
+				<i>You have been logged out.</i>
+			<p>Username: <input type="text" name="username"/></p>
+			<p>Password: <input type="password" name="password"/></p>
+			<input type="submit" value="Login"/>
+		</form>
+	</div>
 </body>
 </html>
