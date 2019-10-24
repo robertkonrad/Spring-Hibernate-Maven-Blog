@@ -32,6 +32,13 @@ public class BlogController {
 		return "list_posts";
 	}
 	
+	@RequestMapping(value="/post/{postId}")
+	public String detailsPost(@PathVariable int postId, Model theModel) {
+		Post post = postService.getPost(postId);
+		theModel.addAttribute("post", post);
+		return "post_details";
+	}
+	
 	@RequestMapping(value="/post/delete/{postId}")
 	public String deletePost(@PathVariable int postId) {
 		postService.deletePost(postId);

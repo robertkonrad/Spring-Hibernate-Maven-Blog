@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+ 	layout:decorate="~{layouts/main-layout}">
+<head>
+	<title th:text="'Blog - ' + ${post.title}"></title>
+</head>
+<body>
+	<div layout:fragment="content">
+	 	<div class="container">
+	 		<div class="row">
+	 			<div class="col-6">
+	 				Image
+	 			</div>
+	 			<div class="col-6">
+	 				Details
+	 			</div>
+	 		</div>
+	 		<div>
+	 			<div class="col-8 offset-2">
+	 				Description
+	 			</div>
+	 		</div>
+	 	</div>
+	</div>
+</body>
+</html>
