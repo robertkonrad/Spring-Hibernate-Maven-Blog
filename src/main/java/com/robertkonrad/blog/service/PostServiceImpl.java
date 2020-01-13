@@ -1,11 +1,13 @@
 package com.robertkonrad.blog.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.robertkonrad.blog.dao.PostDAO;
 import com.robertkonrad.blog.entity.Post;
@@ -24,8 +26,8 @@ public class PostServiceImpl implements PostService {
 
 	@Transactional
 	@Override
-	public void savePost(Post post) {
-		postDAO.savePost(post);
+	public void savePost(Post post, MultipartFile file) throws IOException {
+		postDAO.savePost(post, file);
 	}
 
 	@Transactional

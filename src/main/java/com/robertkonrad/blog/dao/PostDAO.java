@@ -2,12 +2,14 @@ package com.robertkonrad.blog.dao;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.robertkonrad.blog.entity.Post;
 
 public interface PostDAO {
 	public void deletePost(int postId);
 
-	public void savePost(Post post);
+	public void savePost(Post post, MultipartFile file);
 
 	public Post getPost(int postId);
 

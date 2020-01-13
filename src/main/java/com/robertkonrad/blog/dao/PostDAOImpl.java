@@ -1,14 +1,21 @@
 package com.robertkonrad.blog.dao;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.ServletContext;
+
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.robertkonrad.blog.entity.Post;
 import com.robertkonrad.blog.entity.User;
@@ -18,17 +25,26 @@ public class PostDAOImpl implements PostDAO {
 	
 	@Autowired
 	private EntityManager entityManager;
+	
+	@Autowired
+	ServletContext context;
 
 	@Override
 	public void deletePost(int postId) {
 		Session session = entityManager.unwrap(Session.class);
-
+		
 		Post post = session.get(Post.class, postId);
+		
+		String folder = context.getRealPath("/image/");
+		
+		File file = new File(folder + post.getImage());
+		file.delete();
+		
 		session.delete(post);	
 	}
 
 	@Override
-	public void savePost(Post post) {
+	public void savePost(Post post, MultipartFile file) {
 		Session session = entityManager.unwrap(Session.class);
 		
 		if (post.getId() == 0) {
@@ -46,6 +62,20 @@ public class PostDAOImpl implements PostDAO {
 			Date lastModificated = new Date();
 			post.setLastModificated(lastModificated);
 		}
+		
+		
+		String folder = context.getRealPath("/image/");
+		Path path = Paths.get(folder + post.getTitle() + "-" + file.getOriginalFilename());
+		try {
+			file.transferTo(path);
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		post.setImage(post.getTitle() + "-" + file.getOriginalFilename());
 		
 		session.merge(post);
 

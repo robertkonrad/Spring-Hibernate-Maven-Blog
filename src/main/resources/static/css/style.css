@@ -24,3 +24,11 @@
 	font-size: 36px;
 	margin-right: 30px;
 }
+
+.container {
+	margin: 10px;
+}
+
+.postDetailTitle {
+	font-size: 3rem;
+}

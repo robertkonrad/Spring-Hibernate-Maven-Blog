@@ -45,17 +45,23 @@ public class Post {
 	@Column(name = "last_modificated")
 	private Date lastModificated;
 	
+	@Column(name = "image")
+	private String image;
+	
 	public Post() {
 		
 	}
 
-	public Post(String title, String description, User author, Date createdDate, Date lastModificated) {
+	public Post(int id, @NotNull @Size(max = 100) String title, @NotNull @Size(max = 255) String description,
+			@NotNull User author, @NotNull Date createdDate, @NotNull Date lastModificated, String image) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.author = author;
 		this.createdDate = createdDate;
 		this.lastModificated = lastModificated;
+		this.image = image;
 	}
 
 	public int getId() {
@@ -106,11 +112,22 @@ public class Post {
 		this.lastModificated = lastModificated;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", author=" + author
-				+ ", createdDate=" + createdDate + ", lastModificated=" + lastModificated + "]";
+				+ ", createdDate=" + createdDate + ", lastModificated=" + lastModificated + ", image="
+				+ image + "]";
 	}
+
+	
 	
 	
 }

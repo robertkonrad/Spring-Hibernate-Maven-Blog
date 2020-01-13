@@ -1,5 +1,6 @@
 package com.robertkonrad.blog.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.robertkonrad.blog.entity.Post;
 import com.robertkonrad.blog.service.PostService;
 
@@ -39,7 +43,7 @@ public class BlogController {
 		return "post_details";
 	}
 	
-	@RequestMapping(value="/post/delete/{postId}")
+	@RequestMapping(value="/post/{postId}/delete")
 	public String deletePost(@PathVariable int postId) {
 		postService.deletePost(postId);
 		return "redirect:/";
@@ -53,8 +57,13 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/post/save")
-	public String savePost(@ModelAttribute("post") Post post) {
-		postService.savePost(post);
+	public String savePost(@ModelAttribute("post") Post post, @RequestParam("file") MultipartFile file) {
+		try {
+			postService.savePost(post, file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "redirect:/";
 	}
 	

@@ -9,7 +9,7 @@
 <body>
 	<div layout:fragment="content">
 		<h1>Post form</h1>
-		<form th:action="@{/post/save}" method="post" th:object="${post}">
+		<form th:action="@{/post/save}" method="post" th:object="${post}" enctype="multipart/form-data">
 			<input type="hidden" th:field="*{id}">
 			<table>
 				<tr>
@@ -19,6 +19,10 @@
 				<tr>
 					<td>Description:</td>
 					<td><input type="text" th:field="*{description}"/></td>
+				</tr>
+				<tr>
+					<td>File</td>
+					<td><input type="file" name="file"></input></td>
 				</tr>
 				<tr>
 					<td><input type="submit" value="Submit"></td>
