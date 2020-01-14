@@ -112,4 +112,4 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 .flattened-pom.xml
 
-!**webapp/image/**
+src/main/webapp/image/
