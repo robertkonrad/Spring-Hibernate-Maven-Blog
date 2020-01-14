@@ -14,12 +14,14 @@
 	 	<div class="container">
 	 		<div class="row">
 	 			<div class="col-4">
-	 				<img th:attr="src=@{'/image/'+${post.image}}" width="250" height="250"/>
+	 				<img th:attr="src=@{'/image/'+${post.image}}" width="250" height="250"
+	 				th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'"/>
 	 				<p th:text="${post.author.username}"></p>
 	 				<p th:text="${post.createdDate}"></p>
 	 				<p th:text="${post.lastModificated}"></p>
 	 				<a th:href="@{${post.id}+'/delete'}" class="btn btn-danger" 
 	 				onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+	 				<a th:href="@{${post.id}+'/update'}" class="btn btn-info">Update</a>
 	 			</div>
 	 			<div class="col-8">
 	 				<p th:text="${post.description}"></p>

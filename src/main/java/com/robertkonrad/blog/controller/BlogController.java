@@ -67,7 +67,7 @@ public class BlogController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/post/update/{postId}")
+	@RequestMapping(value="/post/{postId}/update")
 	public String updatePost(Model theModel, @PathVariable int postId) {
 		Post post = postService.getPost(postId);
 		theModel.addAttribute("post", post);

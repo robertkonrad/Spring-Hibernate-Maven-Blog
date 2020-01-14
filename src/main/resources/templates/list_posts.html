@@ -15,7 +15,8 @@
 				<div class="col-9">
 					<div class="row" th:each="post : ${posts}">
 						<div class="col-4">
-							<img th:attr="src=@{'/image/'+${post.image}}" width="250" height="250"/>
+							<img th:attr="src=@{'/image/'+${post.image}}" width="250" height="250" 
+							th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'" />
 						</div>
 						<div class="col-5">
 							<div>

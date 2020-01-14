@@ -35,10 +35,11 @@ public class PostDAOImpl implements PostDAO {
 		
 		Post post = session.get(Post.class, postId);
 		
-		String folder = context.getRealPath("/image/");
-		
-		File file = new File(folder + post.getImage());
-		file.delete();
+		if (!post.getImage().equals("")) {
+			String folder = context.getRealPath("/image/");
+			File file = new File(folder + post.getImage());
+			file.delete();
+		}
 		
 		session.delete(post);	
 	}
@@ -55,27 +56,51 @@ public class PostDAOImpl implements PostDAO {
 			post.setCreatedDate(createdDate);
 			post.setLastModificated(createdDate);
 			post.setAuthor(user);
+			
+			if (!file.isEmpty()) {
+				String folder = context.getRealPath("/image/");
+				Path path = Paths.get(folder + post.getTitle() + "-" + file.getOriginalFilename());
+				try {
+					file.transferTo(path);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				post.setImage(post.getTitle() + "-" + file.getOriginalFilename());
+			} else {
+				post.setImage("");
+			}
 		} else {
 			Post orginalPost = getPost(post.getId());
 			post.setAuthor(orginalPost.getAuthor());
 			post.setCreatedDate(orginalPost.getCreatedDate());
 			Date lastModificated = new Date();
 			post.setLastModificated(lastModificated);
+			if (!file.isEmpty()) {
+				String folder = context.getRealPath("/image/");
+				Path path = Paths.get(folder + post.getTitle() + "-" + file.getOriginalFilename());
+				try {
+					file.transferTo(path);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				post.setImage(post.getTitle() + "-" + file.getOriginalFilename());
+				if (!orginalPost.getImage().equals("")) {
+					String folder2 = context.getRealPath("/image/");
+					File file2 = new File(folder2 + orginalPost.getImage());
+					file2.delete();
+				}
+			} else {
+				post.setImage(orginalPost.getImage());
+			}
 		}
-		
-		
-		String folder = context.getRealPath("/image/");
-		Path path = Paths.get(folder + post.getTitle() + "-" + file.getOriginalFilename());
-		try {
-			file.transferTo(path);
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		post.setImage(post.getTitle() + "-" + file.getOriginalFilename());
 		
 		session.merge(post);
 
