@@ -30,10 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/page/{\\d+}").permitAll()
 			.antMatchers("/user/save").permitAll()
 			.antMatchers("/user/form").permitAll()
-			.antMatchers("/post/delete/{\\d+}").hasAnyAuthority("ADMIN", "USER")
+			.antMatchers("/post/{\\d+}/delete").hasAnyAuthority("ADMIN", "USER")
 			.antMatchers("/post/save").hasAnyAuthority("ADMIN", "USER")
 			.antMatchers("/post/form").hasAnyAuthority("ADMIN", "USER")
-			.antMatchers("/post/update/{\\d+}").hasAnyAuthority("ADMIN", "USER")
+			.antMatchers("/post/{\\d+}/update").hasAnyAuthority("ADMIN", "USER")
+			.antMatchers("/post/{\\\\d+}").permitAll()
 			.anyRequest().authenticated()
 		.and()
 		.formLogin()
@@ -50,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 	    web
 	            .ignoring()
-	            .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**");
+	            .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/image/**");
 	}
 	
 }

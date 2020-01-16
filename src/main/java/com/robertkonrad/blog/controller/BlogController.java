@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.robertkonrad.blog.entity.Comment;
 import com.robertkonrad.blog.entity.Post;
+import com.robertkonrad.blog.service.CommentService;
 import com.robertkonrad.blog.service.PostService;
 
 @Controller
@@ -20,6 +22,9 @@ public class BlogController {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@RequestMapping(value="/")
 	public String index() {
@@ -31,6 +36,9 @@ public class BlogController {
 		int postsOnOnePage = 10;
 		List<Post> posts = postService.getPostsByPage(page, postsOnOnePage);
 		int pages = (int) Math.ceil((double)postService.getNumberOfAllPosts() / postsOnOnePage);
+		if (pages == 0) {
+			pages++;
+		}
 		theModel.addAttribute("posts", posts);
 		theModel.addAttribute("pages", pages);
 		return "list_posts";
@@ -39,8 +47,18 @@ public class BlogController {
 	@RequestMapping(value="/post/{postId}")
 	public String detailsPost(@PathVariable int postId, Model theModel) {
 		Post post = postService.getPost(postId);
+		List<Comment> comments = commentService.getComments(postId);
 		theModel.addAttribute("post", post);
+		theModel.addAttribute("comments", comments);
+		Comment comment = new Comment();
+		theModel.addAttribute("comment", comment);
 		return "post_details";
+	}
+	
+	@RequestMapping(value="/post/{postId}/comment/add")
+	public String saveComment(@ModelAttribute("comment") Comment comment, @PathVariable int postId) {
+		commentService.saveComment(postId, comment);
+		return "redirect:/post/{postId}/";
 	}
 	
 	@RequestMapping(value="/post/{postId}/delete")

@@ -1,9 +1,7 @@
 package com.robertkonrad.blog.entity;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,34 +9,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "post", schema = "blog")
-public class Post {
-
+@Table(name = "comment", schema = "blog")
+public class Comment {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@NotNull
-	@Size(max = 100)
-	@Column(name = "title")
-	private String title;
-	
-	@NotNull
-	@Size(max = 8000)
+	@Size(max = 1000)
 	@Column(name = "description")
 	private String description;
-	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "author")
-	private User author;
 	
 	@NotNull
 	@Column(name = "created_date")
@@ -48,26 +34,29 @@ public class Post {
 	@Column(name = "last_modificated")
 	private Date lastModificated;
 	
-	@Column(name = "image")
-	private String image;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "author")
+	private User author;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-	private List<Comment> comments;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "post")
+	private Post post;
 	
-	public Post() {
+	public Comment() {
 		
 	}
 
-	public Post(int id, @NotNull @Size(max = 100) String title, @NotNull @Size(max = 255) String description,
-			@NotNull User author, @NotNull Date createdDate, @NotNull Date lastModificated, String image) {
+	public Comment(int id, @NotNull @Size(max = 8000) String description, @NotNull Date createdDate,
+			@NotNull Date lastModificated, @NotNull User author, @NotNull Post post) {
 		super();
 		this.id = id;
-		this.title = title;
 		this.description = description;
-		this.author = author;
 		this.createdDate = createdDate;
 		this.lastModificated = lastModificated;
-		this.image = image;
+		this.author = author;
+		this.post = post;
 	}
 
 	public int getId() {
@@ -78,28 +67,12 @@ public class Post {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public User getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(User author) {
-		this.author = author;
 	}
 
 	public Date getCreatedDate() {
@@ -118,22 +91,27 @@ public class Post {
 		this.lastModificated = lastModificated;
 	}
 
-	public String getImage() {
-		return image;
+	public User getAuthor() {
+		return author;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 	@Override
 	public String toString() {
-		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", author=" + author
-				+ ", createdDate=" + createdDate + ", lastModificated=" + lastModificated + ", image="
-				+ image + "]";
+		return "Comment [id=" + id + ", description=" + description + ", createdDate=" + createdDate
+				+ ", lastModificated=" + lastModificated + ", author=" + author + ", post=" + post + "]";
 	}
-
-	
 	
 	
 }

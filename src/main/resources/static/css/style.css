@@ -29,6 +29,35 @@
 	margin: 10px;
 }
 
-.postDetailTitle {
+.post-detail-title {
 	font-size: 3rem;
+}
+
+.post-desc-overflow {
+	word-break: break-word;
+	text-align: justify;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 5;
+}
+
+.post-details-desc {
+	text-align: justify;
+	word-break: break-word;
+}
+
+.comment-desc {
+	text-align: justify;
+	word-break: break-word;
+}
+
+.comment {
+	border-width:2px;  
+    border-bottom-style:groove;
+}
+
+#comment-title {
+	border-width:4px;  
+    border-bottom-style:groove
 }
