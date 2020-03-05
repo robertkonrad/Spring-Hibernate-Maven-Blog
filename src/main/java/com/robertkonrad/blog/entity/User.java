@@ -1,5 +1,8 @@
 package com.robertkonrad.blog.entity;
 
+import com.robertkonrad.blog.validation.UserMatchesPassword;
+import com.robertkonrad.blog.validation.UserPassword;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,21 +12,27 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", schema = "blog")
+@UserMatchesPassword
 public class User {
 
 	@Id
+	@NotNull(message = "Username cannot be empty.")
+	@NotEmpty(message = "Username cannot be empty.")
 	@Column(name = "username")
 	private String username;
-	
+
+	@UserPassword
 	@Size(max = 68)
 	@NotNull
 	@Column(name = "password")
 	private String password;
+	private String matchingPassword;
 	
 	@NotNull
 	@Column(name = "enabled", columnDefinition = "integer default 1")
@@ -71,6 +80,14 @@ public class User {
 
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getMatchingPassword() {
+		return matchingPassword;
+	}
+
+	public void setMatchingPassword(String matchingPassword) {
+		this.matchingPassword = matchingPassword;
 	}
 
 	@Override
