@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface UserMatchesPassword {
     public String value() default "";
 
-    public String message() default "Passwords don't match!";
+    public String message() default "Passwords don'''t match!";
 
     public Class<?>[] groups() default {};
 
