@@ -20,4 +20,10 @@ public class UserServiceImpl implements UserService {
 		userDAO.saveUser(user);
 	}
 
+	@Transactional
+	@Override
+	public boolean usernameAvailable(String username) {
+		return userDAO.usernameAvailable(username);
+	}
+
 }

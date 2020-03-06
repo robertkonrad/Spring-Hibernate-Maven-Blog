@@ -2,6 +2,7 @@ package com.robertkonrad.blog.entity;
 
 import com.robertkonrad.blog.validation.UserMatchesPassword;
 import com.robertkonrad.blog.validation.UserPassword;
+import com.robertkonrad.blog.validation.UserUsername;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import javax.validation.constraints.Size;
 @UserMatchesPassword
 public class User {
 
+	@UserUsername
 	@Id
 	@NotNull(message = "Username cannot be empty.")
 	@NotEmpty(message = "Username cannot be empty.")
