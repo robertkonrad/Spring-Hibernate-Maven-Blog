@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ import com.robertkonrad.blog.entity.Comment;
 import com.robertkonrad.blog.entity.Post;
 import com.robertkonrad.blog.service.CommentService;
 import com.robertkonrad.blog.service.PostService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 public class BlogController {
@@ -56,9 +60,14 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/post/{postId}/comment/add")
-	public String saveComment(@ModelAttribute("comment") Comment comment, @PathVariable int postId) {
-		commentService.saveComment(postId, comment);
-		return "redirect:/post/{postId}/";
+	public String saveComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult theBindingResult, @PathVariable int postId) {
+		if (theBindingResult.hasErrors()){
+			// todo
+			return "";
+		} else {
+			commentService.saveComment(postId, comment);
+			return "redirect:/post/{postId}";
+		}
 	}
 	
 	@RequestMapping(value="/post/{postId}/delete")

@@ -11,7 +11,7 @@
 	<div layout:fragment="content">
 		<h1>Login</h1>
 		<form th:action="@{/authenticate}" method="POST">
-			<p th:if="${param.error != null}">
+			<p class="alert alert-danger" th:if="${param.error != null}">
 				<i>Invalid username/password.</i>
 			<p th:if="${param.logout != null}">
 				<i>You have been logged out.</i>

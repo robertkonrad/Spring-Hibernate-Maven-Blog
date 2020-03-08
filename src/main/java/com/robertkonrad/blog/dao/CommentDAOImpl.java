@@ -47,7 +47,7 @@ public class CommentDAOImpl implements CommentDAO {
 		comment.setCreatedDate(createdDate);
 		comment.setLastModificated(createdDate);
 		
-		session.merge(comment);
+		session.save(comment);
 	}
 
 }

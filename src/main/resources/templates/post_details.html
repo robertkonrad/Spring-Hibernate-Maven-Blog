@@ -33,6 +33,9 @@
 	 				<div style="border-width:2px;border-bottom-style:groove;" sec:authorize="isAuthenticated()">
 	 					<form th:action="@{${post.id}+'/comment/add'}" method="post" th:object="${comment}">
 							<input type="hidden" th:field="*{id}">
+							<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+								<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+							</div>
 							<table>
 								<tr>
 									<td>Description:</td>
