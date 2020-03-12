@@ -1,5 +1,7 @@
 package com.robertkonrad.blog.entity;
 
+import com.robertkonrad.blog.validation.PostFileExtension;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,28 +29,28 @@ public class Post {
 	private int id;
 	
 	@NotNull
+	@NotEmpty(message = "Title cannot be empty.")
 	@Size(max = 100)
 	@Column(name = "title")
 	private String title;
 	
 	@NotNull
+	@NotEmpty(message = "Description cannot be empty.")
 	@Size(max = 8000)
 	@Column(name = "description")
 	private String description;
-	
-	@NotNull
+
 	@ManyToOne
 	@JoinColumn(name = "author")
 	private User author;
-	
-	@NotNull
+
 	@Column(name = "created_date")
 	private Date createdDate;
-	
-	@NotNull
+
 	@Column(name = "last_modificated")
 	private Date lastModificated;
-	
+
+	@PostFileExtension
 	@Column(name = "image")
 	private String image;
 	

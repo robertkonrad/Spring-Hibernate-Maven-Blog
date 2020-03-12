@@ -18,7 +18,7 @@ public class User {
 
 	@UserUsername
 	@Id
-	@NotNull(message = "Username cannot be empty.")
+	@NotNull
 	@NotEmpty(message = "Username cannot be empty.")
 	@Column(name = "username")
 	private String username;

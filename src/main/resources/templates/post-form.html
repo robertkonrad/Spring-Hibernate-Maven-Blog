@@ -13,6 +13,11 @@
 			<input type="hidden" th:field="*{id}">
 			<table>
 				<tr>
+					<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+						<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+					</div>
+				</tr>
+				<tr>
 					<td>Title:</td>
 					<td><input type="text" th:field="*{title}"/></td>
 				</tr>

@@ -84,14 +84,13 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/post/save")
-	public String savePost(@ModelAttribute("post") Post post, @RequestParam("file") MultipartFile file) {
-		try {
+	public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult theBindingResult, @RequestParam("file") MultipartFile file) throws IOException {
+		if (theBindingResult.hasErrors()){
+			return "post-form";
+		} else {
 			postService.savePost(post, file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "redirect:/";
 		}
-		return "redirect:/";
 	}
 	
 	@RequestMapping(value="/post/{postId}/update")
