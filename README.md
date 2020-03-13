@@ -12,6 +12,8 @@ Simple blog application.
 
 ## How to run
 
+Connect to database by changing url and login data in /src/main/resources/application.properties file.
+
 Open terminal in project folder and use commands:
 ```
     ./mvnw clean install
