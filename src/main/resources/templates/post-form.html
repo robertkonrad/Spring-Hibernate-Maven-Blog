@@ -8,7 +8,8 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1>Add/update form</h1>
+		<h1 th:if="${post.id > 0}" >Update post</h1>
+		<h1 th:unless="${post.id > 0}" >Create post</h1>
 		<form th:action="@{/post/save}" method="post" th:object="${post}" enctype="multipart/form-data">
 			<input type="hidden" th:field="*{id}">
 			<table>

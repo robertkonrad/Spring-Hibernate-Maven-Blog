@@ -19,13 +19,13 @@ public class Post {
 	@NotNull
 	@NotEmpty(message = "Title cannot be empty.")
 	@Size(max = 100)
-	@Column(name = "title")
+	@Column(name = "title", length = 100)
 	private String title;
 	
 	@NotNull
 	@NotEmpty(message = "Description cannot be empty.")
 	@Size(max = 8000)
-	@Column(name = "description")
+	@Column(name = "description", length = 8000)
 	private String description;
 
 	@ManyToOne
