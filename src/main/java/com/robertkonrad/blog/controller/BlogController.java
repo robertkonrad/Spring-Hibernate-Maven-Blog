@@ -3,6 +3,8 @@ package com.robertkonrad.blog.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.robertkonrad.blog.entity.User;
+import com.robertkonrad.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,9 @@ public class BlogController {
 	
 	@Autowired
 	private CommentService commentService;
+
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value="/")
 	public String index() {
@@ -98,5 +103,15 @@ public class BlogController {
 		Post post = postService.getPost(postId);
 		theModel.addAttribute("post", post);
 		return "post-form";
+	}
+
+	@RequestMapping(value="/admin/users")
+	public String listUsers(Model theModel) {
+		List<List> result = userService.getUsers();
+		List<User> users = result.get(0);
+		List<String> auth = result.get(1);
+		theModel.addAttribute("users", users);
+		theModel.addAttribute("auth", auth);
+		return "list_users";
 	}
 }

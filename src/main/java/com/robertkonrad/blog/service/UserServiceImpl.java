@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.robertkonrad.blog.dao.UserDAO;
 import com.robertkonrad.blog.entity.User;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -24,6 +26,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean usernameAvailable(String username) {
 		return userDAO.usernameAvailable(username);
+	}
+
+	@Override
+	public List<List> getUsers() {
+		return userDAO.getUsers();
 	}
 
 }

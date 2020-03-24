@@ -7,13 +7,14 @@
 </head>
 <body>
 	<div th:fragment="nav">
-		<nav class="navbar navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand" th:href="@{/}">Blog</a>
 				</div>
 				<ul class="nav navbar-nav mr-auto">
-					<li th:classappend="${#request.requestURI.startsWith('/page') ? 'active':''}"><a th:href="@{/}">Home</a></li>
+					<li class="nav-item" th:classappend="${#request.requestURI.startsWith('/page') ? 'active':''}"><a class="nav-link" th:href="@{/}">Home</a></li>
+					<li class="nav-item" sec:authorize="hasAuthority('ADMIN')" th:classappend="${#request.requestURI.startsWith('/admin') ? 'active':''}"><a class="nav-link" th:href="@{/admin/users}">Users</a></li>
 				</ul>
 				<div sec:authorize="isAuthenticated()">
 					Hello <span sec:authentication="name"></span> !

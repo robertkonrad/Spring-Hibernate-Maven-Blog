@@ -3,6 +3,7 @@ package com.robertkonrad.blog.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.robertkonrad.blog.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.robertkonrad.blog.entity.Post;

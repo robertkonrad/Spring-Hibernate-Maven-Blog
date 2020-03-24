@@ -1,7 +1,6 @@
 package com.robertkonrad.blog.dao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.robertkonrad.blog.entity.Role;
 import com.robertkonrad.blog.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -44,6 +46,25 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 		return false;
+	}
+
+	@Override
+	public List<List> getUsers() {
+		Session session = entityManager.unwrap(Session.class);
+		List<String> auth = new ArrayList<>();
+
+		List<User> users = session.createQuery("FROM User", User.class).getResultList();
+
+		for(User user : users){
+			String role = session.createQuery("SELECT authority FROM Role WHERE username='" + user.getUsername() + "'", String.class).getSingleResult();
+			auth.add(role);
+		}
+
+		List<List> result = new ArrayList<List>();
+		result.add(users);
+		result.add(auth);
+
+		return result;
 	}
 
 }
