@@ -67,4 +67,36 @@ public class UserDAOImpl implements UserDAO {
 		return result;
 	}
 
+	@Override
+	public void deleteUser(String username) {
+		Session session = entityManager.unwrap(Session.class);
+
+		User user = session.createQuery("FROM User WHERE username='" + username + "'", User.class).getSingleResult();
+		Role auth = session.createQuery("FROM Role WHERE username='" + username + "'", Role.class).getSingleResult();
+
+		session.delete(auth);
+		session.delete(user);
+	}
+
+	@Override
+	public User getUser(String username) {
+		Session session = entityManager.unwrap(Session.class);
+
+		User user = session.createQuery("FROM User WHERE username='" + username +"'", User.class).getSingleResult();
+
+		return user;
+	}
+
+	@Override
+	public void saveUpdatedUserPassword(User user, String username) {
+		Session session = entityManager.unwrap(Session.class);
+
+		User eUser = session.createQuery("FROM User WHERE username='" + username + "'", User.class).getSingleResult();
+
+		eUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+		session.update(eUser);
+
+	}
+
 }

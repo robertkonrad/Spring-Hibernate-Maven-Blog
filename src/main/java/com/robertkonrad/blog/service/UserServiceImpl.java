@@ -28,9 +28,28 @@ public class UserServiceImpl implements UserService {
 		return userDAO.usernameAvailable(username);
 	}
 
+	@Transactional
 	@Override
 	public List<List> getUsers() {
 		return userDAO.getUsers();
+	}
+
+	@Transactional
+	@Override
+	public void deleteUser(String username) {
+		userDAO.deleteUser(username);
+	}
+
+	@Transactional
+	@Override
+	public User getUser(String username) {
+		return userDAO.getUser(username);
+	}
+
+	@Transactional
+	@Override
+	public void saveUpdatedUserPassword(User user, String username) {
+		userDAO.saveUpdatedUserPassword(user, username);
 	}
 
 }

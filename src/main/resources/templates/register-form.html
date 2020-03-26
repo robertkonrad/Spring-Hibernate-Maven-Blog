@@ -19,18 +19,15 @@
 				<tr>
 					<td>Username:</td>
 					<td><input type="text" th:field="*{username}"/></td>
-<!--					<td class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>-->
 				</tr>
 				<tr>
 					<td>Password:</td>
 					<td><input type="password" th:field="*{password}"/></td>
-<!--					<td class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>-->
 				</tr>
 				<tr>
 					<td>Confirm Password:</td>
 					<td><input type="password" th:field="*{matchingPassword}"/></td>
 				</tr>
-
 				<tr>
 					<td><input type="submit" value="Submit"></td>
 				</tr>

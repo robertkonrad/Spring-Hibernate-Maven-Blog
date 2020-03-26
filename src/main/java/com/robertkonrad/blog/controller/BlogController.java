@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.robertkonrad.blog.entity.User;
 import com.robertkonrad.blog.service.UserService;
+import com.robertkonrad.blog.validation.UserMatchesPassword;
+import com.robertkonrad.blog.validation.UserPassword;
+import com.robertkonrad.blog.validation.UserPasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -113,5 +117,30 @@ public class BlogController {
 		theModel.addAttribute("users", users);
 		theModel.addAttribute("auth", auth);
 		return "list_users";
+	}
+
+	@RequestMapping(value="/admin/users/{username}/delete")
+	public String deleteUser(@PathVariable String username) {
+		userService.deleteUser(username);
+		return "redirect:/";
+	}
+
+	@RequestMapping(value="/admin/users/{username}/edit")
+	public String updateUserPassword(Model theModel, @PathVariable String username) {
+		User user = userService.getUser(username);
+		theModel.addAttribute("user", user);
+		return "user-form";
+	}
+
+	@RequestMapping(value = "/admin/users/{username}/edit/save")
+	public String saveUpdatedUserPassword(@ModelAttribute("user") User user, BindingResult theBindingResult, @PathVariable String username) {
+		//todo fix validation
+		if (theBindingResult.hasErrors()){
+			return "user-form";
+		} else {
+			userService.saveUpdatedUserPassword(user, username);
+			return "redirect:/admin/users";
+		}
+
 	}
 }

@@ -10,4 +10,10 @@ public interface UserService {
 	public boolean usernameAvailable(String username);
 
     public List<List> getUsers();
+
+    public void deleteUser(String username);
+
+    public User getUser(String username);
+
+    public void saveUpdatedUserPassword(User user, String username);
 }
