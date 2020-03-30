@@ -13,17 +13,17 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", schema = "blog")
-@UserMatchesPassword
+@UserMatchesPassword(groups = {Group1.class, Group2.class})
 public class User {
 
-	@UserUsername
+	@UserUsername(groups = {Group1.class})
 	@Id
 	@NotNull
 	@NotEmpty(message = "Username cannot be empty.")
 	@Column(name = "username")
 	private String username;
 
-	@UserPassword
+	@UserPassword(groups = {Group1.class, Group2.class})
 	@Size(max = 68)
 	@NotNull
 	@Column(name = "password")

@@ -3,7 +3,7 @@ package com.robertkonrad.blog.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.robertkonrad.blog.entity.User;
+import com.robertkonrad.blog.entity.*;
 import com.robertkonrad.blog.service.UserService;
 import com.robertkonrad.blog.validation.UserMatchesPassword;
 import com.robertkonrad.blog.validation.UserPassword;
@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.robertkonrad.blog.entity.Comment;
-import com.robertkonrad.blog.entity.Post;
 import com.robertkonrad.blog.service.CommentService;
 import com.robertkonrad.blog.service.PostService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -133,8 +131,7 @@ public class BlogController {
 	}
 
 	@RequestMapping(value = "/admin/users/{username}/edit/save")
-	public String saveUpdatedUserPassword(@ModelAttribute("user") User user, BindingResult theBindingResult, @PathVariable String username) {
-		//todo fix validation
+	public String saveUpdatedUserPassword(@Validated({Group2.class}) @ModelAttribute("user") User user, BindingResult theBindingResult, @PathVariable String username) {
 		if (theBindingResult.hasErrors()){
 			return "user-form";
 		} else {
