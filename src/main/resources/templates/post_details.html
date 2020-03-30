@@ -16,12 +16,18 @@
 	 			<div class="col-4">
 	 				<img th:attr="src=@{'/image/'+${post.image}}" width="250" height="250"
 	 				th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'"/>
-	 				<p th:text="${post.author.username}"></p>
+	 				<p th:style="${post.author.username == '*User not exist*' ? 'font-style: italic;' : ''}" th:text="${post.author.username}"></p>
 	 				<p th:text="${post.createdDate}"></p>
 	 				<p th:text="${post.lastModificated}"></p>
-	 				<a sec:authorize="isAuthenticated()" th:href="@{${post.id}+'/delete'}" class="btn btn-danger"
-	 				onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-	 				<a sec:authorize="isAuthenticated()" th:href="@{${post.id}+'/update'}" class="btn btn-info">Update</a>
+					<div sec:authorize="hasAuthority('ADMIN')">
+						<a sec:authorize="isAuthenticated()" th:href="@{${post.id}+'/delete'}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+						<a sec:authorize="isAuthenticated()" th:href="@{${post.id}+'/update'}" class="btn btn-info">Update</a>
+					</div>
+					<div sec:authorize="hasAuthority('USER')" th:if="${post.author.username} == ${#authentication.name}">
+						<a sec:authorize="isAuthenticated()" th:href="@{${post.id}+'/delete'}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+						<a sec:authorize="isAuthenticated()" th:href="@{${post.id}+'/update'}" class="btn btn-info">Update</a>
+					</div>
+
 	 			</div>
 	 			<div class="col-8">
 	 				<p class="post-details-desc" th:text="${post.description}"></p>
@@ -48,7 +54,8 @@
 						</form>
 	 				</div>
 	 				<div class="comment" th:each="comment : ${comments}">
-	 					<p th:text="${comment.author.username}+' | '+${comment.createdDate}"></p>
+	 					<span th:style="${comment.author.username == '*User not exist*' ? 'font-style: italic;' : ''}" th:text="${comment.author.username} + ' '"></span>
+						<span th:text="${comment.createdDate}"></span>
 	 					<p class="comment-desc" th:text="${comment.description}"></p>
 	 				</div>
 	 			</div>

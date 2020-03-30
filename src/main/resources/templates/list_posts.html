@@ -18,14 +18,11 @@
 							<img th:attr="src=@{'/image/'+${post.image}}" width="250" height="250" 
 							th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'" />
 							<div sec:authorize="hasAuthority('ADMIN')">
-								<a th:href="@{'/post/'+${post.id}+'/delete'}" class="btn btn-danger"
-								   onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+								<a th:href="@{'/post/'+${post.id}+'/delete'}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
 								<a th:href="@{'/post/'+${post.id}+'/update'}" class="btn btn-info">Update</a>
 							</div>
 							<div sec:authorize="hasAuthority('USER')" th:if="${post.author.username} == ${#authentication.name}">
-								<a th:href="@{'/post/'+${post.id}+'/delete'}" class="btn btn-danger"
-
-				   onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+								<a th:href="@{'/post/'+${post.id}+'/delete'}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
 								<a th:href="@{'/post/'+${post.id}+'/update'}" class="btn btn-info">Update</a>
 							</div>
 						</div>
@@ -34,7 +31,8 @@
 								<p th:text="${post.title}"></p>
 							</div>
 							<div>
-								<p th:text="${post.author.username} +' '+ ${post.createdDate}"></p>
+								<span th:style="${post.author.username == '*User not exist*' ? 'font-style: italic;' : ''}" th:text="${post.author.username} + ' '"></span>
+								<span th:text="${post.createdDate}"></span>
 							</div>
 							<div>
 								<p class="post-desc-overflow" th:text="${post.description}"></p>
