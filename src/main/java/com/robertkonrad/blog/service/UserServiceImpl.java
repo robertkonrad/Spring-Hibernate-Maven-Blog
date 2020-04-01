@@ -52,4 +52,16 @@ public class UserServiceImpl implements UserService {
 		userDAO.saveUpdatedUserPassword(user, username);
 	}
 
+	@Transactional
+	@Override
+	public String getUserRole(String username) {
+		return userDAO.getUserRole(username);
+	}
+
+	@Transactional
+	@Override
+	public void saveChangedUserRole(String username, String role) {
+		userDAO.saveChangedUserRole(username, role);
+	}
+
 }

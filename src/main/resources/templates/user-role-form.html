@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main-layout}">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Blog - Change User Role Page</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Change User Role</h1>
+    <form th:action="@{'/admin/users/'+${username}+'/changeRole/save'}" method="post">
+        <p>Actual role for <span th:text="${username}"></span> is <span th:text="${userRole}"></span>.</p>
+        <span>Choose role: </span>
+        <select id="role" name="role">
+            <option th:each="type : ${roleTypes}" th:value="${type}" th:text="${type}" th:selected="${type == userRole}"></option>
+        </select>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+</div>
+</body>
+</html>

@@ -4,11 +4,11 @@
       layout:decorate="~{layouts/main-layout}">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Blog - Change User Password Form Page</title>
+    <title>Blog - Change User Password Page</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>Change User Password form</h1>
+    <h1>Change User Password</h1>
     <form th:action="@{'/admin/users/'+${username}+'/edit/save'}" method="post" th:object="${user}">
         <table>
             <tr>

@@ -16,4 +16,8 @@ public interface UserService {
     public User getUser(String username);
 
     public void saveUpdatedUserPassword(User user, String username);
+
+    public String getUserRole(String username);
+
+    public void saveChangedUserRole(String username, String role);
 }

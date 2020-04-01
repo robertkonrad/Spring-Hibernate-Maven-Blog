@@ -129,4 +129,24 @@ public class UserDAOImpl implements UserDAO {
 
 	}
 
+	@Override
+	public String getUserRole(String username) {
+		Session session = entityManager.unwrap(Session.class);
+
+		String role = session.createQuery("SELECT authority FROM Role WHERE username='" + username + "'", String.class).getSingleResult();
+
+		return role;
+	}
+
+	@Override
+	public void saveChangedUserRole(String username, String role) {
+		Session session = entityManager.unwrap(Session.class);
+
+		Role auth = session.createQuery("FROM Role WHERE username='" + username + "'", Role.class).getSingleResult();
+
+		auth.setAuthority(role);
+
+		session.update(auth);
+	}
+
 }

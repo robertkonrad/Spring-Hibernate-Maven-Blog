@@ -1,6 +1,9 @@
 package com.robertkonrad.blog.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.robertkonrad.blog.entity.*;
@@ -9,6 +12,7 @@ import com.robertkonrad.blog.validation.UserMatchesPassword;
 import com.robertkonrad.blog.validation.UserPassword;
 import com.robertkonrad.blog.validation.UserPasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +27,7 @@ import com.robertkonrad.blog.service.CommentService;
 import com.robertkonrad.blog.service.PostService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -138,6 +143,26 @@ public class BlogController {
 			userService.saveUpdatedUserPassword(user, username);
 			return "redirect:/admin/users";
 		}
-
 	}
+
+	@RequestMapping(value = "/admin/users/{username}/changeRole")
+	public String changeUserRole(@PathVariable String username, Model theModel){
+		String userRole = userService.getUserRole(username);
+		String[] roleTypes = {"USER", "ADMIN"};
+		theModel.addAttribute("roleTypes", roleTypes);
+		theModel.addAttribute("userRole", userRole);
+		return "user-role-form";
+	}
+
+	@RequestMapping(value = "/admin/users/{username}/changeRole/save")
+	public String saveChangedUserRole(@PathVariable String username, @RequestParam("role") String role) {
+		String userRole = userService.getUserRole(username);
+		if (!role.equals(userRole)){
+			userService.saveChangedUserRole(username, role);
+			if (userRole.equals("ADMIN")){
+				SecurityContextHolder.clearContext();
+			}
+		}
+		return "redirect:/admin/users";
+		}
 }

@@ -24,7 +24,7 @@
                     <td th:text="${auth[__${iter.index}__]}"></td>
                     <td>
                         <a th:href="@{'/admin/users/'+${user.username}+'/edit'}" class="btn btn-info">Change Password</a>
-                        <a th:href="@{'/'}" class="btn btn-info">Change Role</a>
+                        <a th:href="@{'/admin/users/'+${user.username}+'/changeRole'}" class="btn btn-info">Change Role</a>
                         <a th:if="${auth[__${iter.index}__] != 'ADMIN'}" th:href="@{'/admin/users/'+${user.username}+'/delete'}" class="btn btn-danger"
                            onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                     </td>
