@@ -24,7 +24,7 @@ public class Comment {
 	
 	@NotNull
 	@NotEmpty(message = "Description cannot be empty.")
-	@Size(max = 8000, min = 1)
+	@Size(max = 2000, min = 1, message = "Max length is 2000 chars.")
 	@Column(name = "description")
 	private String description;
 

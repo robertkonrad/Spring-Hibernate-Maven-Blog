@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,10 +73,14 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/post/{postId}/comment/add")
-	public String saveComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult theBindingResult, @PathVariable int postId) {
+	public String saveComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult theBindingResult, @PathVariable int postId, Model theModel) {
 		if (theBindingResult.hasErrors()){
-			// todo
-			return "";
+			Post post = postService.getPost(postId);
+			List<Comment> comments = commentService.getComments(postId);
+			theModel.addAttribute("post", post);
+			theModel.addAttribute("comments", comments);
+			theModel.addAttribute("comment", comment);
+			return "post_details";
 		} else {
 			commentService.saveComment(postId, comment);
 			return "redirect:/post/{postId}";
