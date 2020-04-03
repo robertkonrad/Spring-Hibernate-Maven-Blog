@@ -10,6 +10,10 @@
 	<div layout:fragment="content">
 	 	<h1>List of posts</h1>
 		<a sec:authorize="isAuthenticated()" class="btn btn-primary" th:href="@{/post/form}">Create new post</a>
+		<form th:action="@{/page/1}" method="get" class="float-right">
+			<input type="text" th:name="q" th:value="${param.q != null} ? ${param.q[0]} : ''">
+			<input type="submit" th:value="Search">
+		</form>
 		<div class="container">
 			<div class="row">
 				<div class="col-9">
@@ -50,7 +54,7 @@
 		</div>
 		<ul>
 			<th:block th:each="i: ${#numbers.sequence(1, pages)}">
-				<a th:href="@{'/page/' + ${i}}" th:text="${i}"></a>
+				<a th:href="${param.q != null} ? @{'/page/' + ${i}(q=${param.q[0]})} : @{'/page/' + ${i}}" th:text="${i}" th:style="${i} == ${page} ? 'color: black; font-weight: bold;' : ''"></a>
 			</th:block>
 		</ul>
 	</div>

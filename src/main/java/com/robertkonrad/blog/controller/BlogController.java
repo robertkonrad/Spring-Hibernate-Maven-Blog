@@ -1,22 +1,18 @@
 package com.robertkonrad.blog.controller;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.robertkonrad.blog.entity.*;
+import com.robertkonrad.blog.entity.Comment;
+import com.robertkonrad.blog.entity.Group2;
+import com.robertkonrad.blog.entity.Post;
+import com.robertkonrad.blog.entity.User;
+import com.robertkonrad.blog.service.CommentService;
+import com.robertkonrad.blog.service.PostService;
 import com.robertkonrad.blog.service.UserService;
-import com.robertkonrad.blog.validation.UserMatchesPassword;
-import com.robertkonrad.blog.validation.UserPassword;
-import com.robertkonrad.blog.validation.UserPasswordValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.robertkonrad.blog.service.CommentService;
-import com.robertkonrad.blog.service.PostService;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class BlogController {
@@ -49,10 +42,16 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/page/{page}")
-	public String listPostsByPage(@PathVariable int page, Model theModel) {
-		int postsOnOnePage = 10;
-		List<Post> posts = postService.getPostsByPage(page, postsOnOnePage);
-		int pages = (int) Math.ceil((double)postService.getNumberOfAllPosts() / postsOnOnePage);
+	public String listPostsByPage(@PathVariable int page, Model theModel, @RequestParam(required = false, name = "q") String q) {
+		int postsOnOnePage = 10, pages;
+		List<Post> posts;
+		if ((q == null) || (StringUtils.isBlank(q))) {
+			posts = postService.getPostsByPage(page, postsOnOnePage);
+			pages = (int) Math.ceil((double) postService.getNumberOfAllPosts() / postsOnOnePage);
+		} else {
+			posts = postService.getPostsByPageAndSearch(page, postsOnOnePage, q);
+			pages = (int) Math.ceil((double) postService.getNumberOfAllSearchedPosts(q) / postsOnOnePage);
+		}
 		if (pages == 0) {
 			pages++;
 		}

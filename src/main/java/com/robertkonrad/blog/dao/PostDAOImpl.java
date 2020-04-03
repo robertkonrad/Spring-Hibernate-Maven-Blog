@@ -125,7 +125,7 @@ public class PostDAOImpl implements PostDAO {
 		if (page == 1) {
 			minRowNum = 0;
 		} else {
-			minRowNum = (page - 1) * 10;
+			minRowNum = (page - 1) * postsOnOnePage;
 		}
 		
 		List<Post> posts = session.createQuery("FROM Post", Post.class)
@@ -143,6 +143,37 @@ public class PostDAOImpl implements PostDAO {
 		int numberOfAllPosts = posts.size();
 		
 		return numberOfAllPosts;
+	}
+
+	@Override
+	public List<Post> getPostsByPageAndSearch(int page, int postsOnOnePage, String q) {
+		Session session = entityManager.unwrap(Session.class);
+
+		int minRowNum;
+
+		if (page == 1) {
+			minRowNum = 0;
+		} else {
+			minRowNum = (page - 1) * postsOnOnePage;
+		}
+
+		List<Post> posts = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','"+ q +"','%')) " +
+				"or lower(p.description) like lower(concat('%','"+ q +"','%'))", Post.class)
+				.setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
+				.getResultList();
+
+		return posts;
+	}
+
+	@Override
+	public int getNumberOfAllSearchedPosts(String q) {
+		Session session = entityManager.unwrap(Session.class);
+
+		List<Post> posts = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','"+ q +"','%')) " +
+				"or lower(p.description) like lower(concat('%','"+ q +"','%'))", Post.class).getResultList();
+		int numberOfAllSearchedPosts = posts.size();
+
+		return numberOfAllSearchedPosts;
 	}
 
 }

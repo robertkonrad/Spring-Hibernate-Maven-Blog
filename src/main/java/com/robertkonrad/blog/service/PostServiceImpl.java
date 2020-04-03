@@ -48,4 +48,16 @@ public class PostServiceImpl implements PostService {
 		return postDAO.getNumberOfAllPosts();
 	}
 
+	@Transactional
+	@Override
+	public List<Post> getPostsByPageAndSearch(int page, int postsOnOnePage, String q) {
+		return postDAO.getPostsByPageAndSearch(page, postsOnOnePage, q);
+	}
+
+	@Transactional
+	@Override
+	public int getNumberOfAllSearchedPosts(String q) {
+		return postDAO.getNumberOfAllSearchedPosts(q);
+	}
+
 }

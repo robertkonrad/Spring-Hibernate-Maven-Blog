@@ -18,4 +18,8 @@ public interface PostService {
 	public List<Post> getPostsByPage(int page, int postsOnOnePage);
 
 	public int getNumberOfAllPosts();
+
+	public List<Post> getPostsByPageAndSearch(int page, int postsOnOnePage, String q);
+
+	public int getNumberOfAllSearchedPosts(String q);
 }
