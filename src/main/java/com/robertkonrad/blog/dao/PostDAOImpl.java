@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -149,6 +150,7 @@ public class PostDAOImpl implements PostDAO {
 	public List<Post> getPostsByPageAndSearch(int page, int postsOnOnePage, String q) {
 		Session session = entityManager.unwrap(Session.class);
 
+		List<Post> posts = new ArrayList<>();
 		int minRowNum;
 
 		if (page == 1) {
@@ -157,10 +159,20 @@ public class PostDAOImpl implements PostDAO {
 			minRowNum = (page - 1) * postsOnOnePage;
 		}
 
-		List<Post> posts = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','"+ q +"','%')) " +
-				"or lower(p.description) like lower(concat('%','"+ q +"','%'))", Post.class)
-				.setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
-				.getResultList();
+		String[] split_q = q.split(" ");
+
+		for (String sq : split_q) {
+			List<Post> posts_temp = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','" + sq + "','%')) " +
+					"or lower(p.description) like lower(concat('%','" + sq + "','%'))", Post.class)
+					.setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
+					.getResultList();
+
+			for (Post post : posts_temp){
+				if (!posts.contains(post)) {
+					posts.add(post);
+				}
+			}
+		}
 
 		return posts;
 	}

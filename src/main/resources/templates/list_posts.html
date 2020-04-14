@@ -10,10 +10,20 @@
 	<div layout:fragment="content">
 	 	<h1>List of posts</h1>
 		<a sec:authorize="isAuthenticated()" class="btn btn-primary" th:href="@{/post/form}">Create new post</a>
-		<form th:action="@{/page/1}" method="get" class="float-right">
+		<form th:action="@{/page/1}" method="get" class="d-flex justify-content-end">
 			<input type="text" th:name="q" th:value="${param.q != null} ? ${param.q[0]} : ''">
 			<input type="submit" th:value="Search">
 		</form>
+		<div th:if="${param.q != null}" class="search_results">
+			<span class="search_header" th:text="${param.q}"></span>
+			<a th:href="@{/}">
+				<svg class="bi bi-x-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+					<path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+					<path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/>
+				</svg>
+			</a>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-9">
