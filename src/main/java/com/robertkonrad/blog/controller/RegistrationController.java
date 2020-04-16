@@ -28,7 +28,7 @@ public class RegistrationController {
 	}
 	
 	@RequestMapping("/user/save")
-	public String save_user(@Validated({Group1.class, Group2.class}) @ModelAttribute("user") User user, BindingResult theBindingResult) {
+	public String save_user(@Validated(Group1.class) @ModelAttribute("user") User user, BindingResult theBindingResult) {
 		if (theBindingResult.hasErrors()){
 			return "register-form";
 		} else {

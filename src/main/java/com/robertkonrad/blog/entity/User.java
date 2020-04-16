@@ -18,15 +18,16 @@ public class User {
 
 	@UserUsername(groups = {Group1.class})
 	@Id
-	@NotNull
-	@NotEmpty(message = "Username cannot be empty.")
-	@Column(name = "username")
+	@NotNull(groups = {Group1.class})
+	@Size(max = 20, message = "Username length must be between 0 and 20 chars.", groups = {Group1.class})
+	@NotEmpty(message = "Username cannot be empty.", groups = {Group1.class})
+	@Column(name = "username", length = 20)
 	private String username;
 
 	@UserPassword(groups = {Group1.class, Group2.class})
-	@Size(max = 68)
-	@NotNull
-	@Column(name = "password")
+	@Size(max = 68, groups = {Group1.class, Group2.class})
+	@NotNull(groups = {Group1.class, Group2.class})
+	@Column(name = "password", length = 68)
 	private String password;
 
 	@Transient

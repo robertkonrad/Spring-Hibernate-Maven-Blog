@@ -1,9 +1,6 @@
 package com.robertkonrad.blog.controller;
 
-import com.robertkonrad.blog.entity.Comment;
-import com.robertkonrad.blog.entity.Group2;
-import com.robertkonrad.blog.entity.Post;
-import com.robertkonrad.blog.entity.User;
+import com.robertkonrad.blog.entity.*;
 import com.robertkonrad.blog.service.CommentService;
 import com.robertkonrad.blog.service.PostService;
 import com.robertkonrad.blog.service.UserService;

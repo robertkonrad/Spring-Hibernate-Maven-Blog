@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "post", schema = "blog")
@@ -43,6 +44,9 @@ public class Post {
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<Comment> comments;
+
+	@OneToMany(mappedBy = "tag")
+	private Set<PostTag> tag;
 	
 	public Post() {
 		
