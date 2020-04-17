@@ -2,7 +2,9 @@ package com.robertkonrad.blog.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
+import com.robertkonrad.blog.entity.Tag;
 import com.robertkonrad.blog.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,4 +24,8 @@ public interface PostService {
 	public List<Post> getPostsByPageAndSearch(int page, int postsOnOnePage, String q);
 
 	public int getNumberOfAllSearchedPosts(String q);
+
+    public List<Tag> getTags();
+
+    public List<Tag> getPostTags(int postId);
 }

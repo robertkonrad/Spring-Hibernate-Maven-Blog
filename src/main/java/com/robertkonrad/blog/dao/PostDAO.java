@@ -1,7 +1,9 @@
 package com.robertkonrad.blog.dao;
 
 import java.util.List;
+import java.util.Set;
 
+import com.robertkonrad.blog.entity.Tag;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.robertkonrad.blog.entity.Post;
@@ -20,4 +22,8 @@ public interface PostDAO {
     public List<Post> getPostsByPageAndSearch(int page, int postsOnOnePage, String q);
 
 	public int getNumberOfAllSearchedPosts(String q);
+
+	public List<Tag> getTags();
+
+    public List<Tag> getPostTags(int postId);
 }

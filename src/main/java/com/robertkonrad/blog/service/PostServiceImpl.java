@@ -2,9 +2,11 @@ package com.robertkonrad.blog.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import com.robertkonrad.blog.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,6 +60,18 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public int getNumberOfAllSearchedPosts(String q) {
 		return postDAO.getNumberOfAllSearchedPosts(q);
+	}
+
+	@Transactional
+	@Override
+	public List<Tag> getTags() {
+		return postDAO.getTags();
+	}
+
+	@Transactional
+	@Override
+	public List<Tag> getPostTags(int postId) {
+		return postDAO.getPostTags(postId);
 	}
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class BlogController {
@@ -52,6 +53,8 @@ public class BlogController {
 		if (pages == 0) {
 			pages++;
 		}
+		List<Tag> tags = postService.getTags();
+		theModel.addAttribute("tags", tags);
 		theModel.addAttribute("posts", posts);
 		theModel.addAttribute("pages", pages);
 		return "list_posts";
@@ -61,9 +64,11 @@ public class BlogController {
 	public String detailsPost(@PathVariable int postId, Model theModel) {
 		Post post = postService.getPost(postId);
 		List<Comment> comments = commentService.getComments(postId);
+		Comment comment = new Comment();
+		List<Tag> tags = postService.getPostTags(postId);
+		theModel.addAttribute("tags", tags);
 		theModel.addAttribute("post", post);
 		theModel.addAttribute("comments", comments);
-		Comment comment = new Comment();
 		theModel.addAttribute("comment", comment);
 		return "post_details";
 	}
@@ -92,12 +97,16 @@ public class BlogController {
 	@RequestMapping(value="/post/form")
 	public String formPost(Model theModel) {
 		Post post = new Post();
+		List<Tag> tags = postService.getTags();
 		theModel.addAttribute("post", post);
+		theModel.addAttribute("tags", tags);
 		return "post-form";
 	}
 	
 	@RequestMapping(value="/post/save")
-	public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult theBindingResult, @RequestParam("file") MultipartFile file) throws IOException {
+	public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult theBindingResult,
+						   @RequestParam("file") MultipartFile file, @RequestParam(value = "tagsCheckbox", required = false) String[] tags) throws IOException {
+		// TODO: 17.04.2020 handle request tags from checkboxes
 		if (theBindingResult.hasErrors()){
 			return "post-form";
 		} else {

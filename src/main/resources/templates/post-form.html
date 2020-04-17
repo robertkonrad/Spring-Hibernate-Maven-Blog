@@ -36,6 +36,12 @@
 				<tr>
 					<td>* (max 8000 characters) </td>
 				</tr>
+				<tr>
+					<span th:each="tag : ${tags}">
+						<input type="checkbox" th:value="${tag.tag}" th:name="tagsCheckbox">
+						<label th:text="${tag.tag}"></label>
+					</span>
+				</tr>
 			</table>
 		</form>
 	</div>

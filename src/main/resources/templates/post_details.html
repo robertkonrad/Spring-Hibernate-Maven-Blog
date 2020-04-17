@@ -33,6 +33,11 @@
 	 				<p class="post-details-desc" th:text="${post.description}"></p>
 	 			</div>
 	 		</div>
+			<div class="col-8 offset-2">
+				<span th:each="tag : ${tags}">
+					<a th:href="@{'/page/1?q='+${tag.tag}}" th:text="${tag.tag}"></a>
+				</span>
+			</div>
 	 		<div>
 	 			<div class="col-11 offset-1">
 	 				<h3 id="comment-title">Comments:</h3>

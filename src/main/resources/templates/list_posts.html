@@ -14,7 +14,7 @@
 			<input type="text" th:name="q" th:value="${param.q != null} ? ${param.q[0]} : ''">
 			<input type="submit" th:value="Search">
 		</form>
-		<div th:if="${param.q != null}" class="search_results">
+		<div th:if="${param.q != null and param.q[0] != ''}" class="search_results">
 			<span class="search_header" th:text="${param.q}"></span>
 			<a th:href="@{/}">
 				<svg class="bi bi-x-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,10 @@
 					</div>
 				</div>
 				<div class="col-3">
-					Tags etc
+					<h3>Tags</h3>
+					<span th:each="tag : ${tags}">
+						<a th:href="@{'/page/1?q='+${tag.tag}}" th:text="${tag.tag}"></a>
+					</span>
 				</div>
 			</div>
 		</div>

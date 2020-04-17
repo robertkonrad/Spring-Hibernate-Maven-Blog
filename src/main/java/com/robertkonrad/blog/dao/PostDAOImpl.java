@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 
+import com.robertkonrad.blog.entity.Tag;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -163,7 +162,7 @@ public class PostDAOImpl implements PostDAO {
 
 		for (String sq : split_q) {
 			List<Post> posts_temp = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','" + sq + "','%')) " +
-					"or lower(p.description) like lower(concat('%','" + sq + "','%'))", Post.class)
+					"or lower(p.description) like lower(concat('%','" + sq + "','%')) or p.id in (SELECT pt.post FROM PostTag pt WHERE pt.tag='"+ sq +"')", Post.class)
 					.setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
 					.getResultList();
 
@@ -186,6 +185,24 @@ public class PostDAOImpl implements PostDAO {
 		int numberOfAllSearchedPosts = posts.size();
 
 		return numberOfAllSearchedPosts;
+	}
+
+	@Override
+	public List<Tag> getTags() {
+		Session session = entityManager.unwrap(Session.class);
+
+		List<Tag> tags = session.createQuery("FROM Tag", Tag.class).getResultList();
+
+		return tags;
+	}
+
+	@Override
+	public List<Tag> getPostTags(int postId) {
+		Session session = entityManager.unwrap(Session.class);
+
+		List<Tag> tags = session.createQuery("From Tag t WHERE t.tag in (SELECT pt.tag FROM PostTag pt WHERE pt.post = '"+ postId +"')", Tag.class).getResultList();
+
+		return tags;
 	}
 
 }
