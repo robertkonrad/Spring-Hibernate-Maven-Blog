@@ -1,49 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
- 	layout:decorate="~{layouts/main-layout}">
+<html layout:decorate="~{layouts/main-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Blog - Post Page</title>
+    <meta charset="ISO-8859-1">
+    <title>Blog - Post Page</title>
 </head>
 <body>
-	<div layout:fragment="content">
-		<h1 th:if="${post.id > 0}" >Update post</h1>
-		<h1 th:unless="${post.id > 0}" >Create post</h1>
-		<form th:action="@{/post/save}" method="post" th:object="${post}" enctype="multipart/form-data">
-			<input type="hidden" th:field="*{id}">
-			<table>
-				<tr>
-					<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-						<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-					</div>
-				</tr>
-				<tr>
-					<td>Title:</td>
-					<td><input type="text" th:field="*{title}"/></td>
-				</tr>
-				<tr>
-					<td>Description*:</td>
-					<td><textarea rows="10" cols="100" th:field="*{description}"></textarea></td>
-				</tr>
-				<tr>
-					<td>File</td>
-					<td><input type="file" name="file"></input></td>
-				</tr>
-				<tr>
-					<td><input type="submit" value="Submit"></td>
-				</tr>
-				<tr>
-					<td>* (max 8000 characters) </td>
-				</tr>
-				<tr>
+<div layout:fragment="content">
+    <h1 th:if="${post.id > 0}">Update post</h1>
+    <h1 th:unless="${post.id > 0}">Create post</h1>
+    <form enctype="multipart/form-data" method="post" th:action="@{/post/save}" th:object="${post}">
+        <input th:field="*{id}" type="hidden">
+        <table>
+            <tr>
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                </div>
+            </tr>
+            <tr>
+                <td>Title:</td>
+                <td><input th:field="*{title}" type="text"/></td>
+            </tr>
+            <tr>
+                <td>Description*:</td>
+                <td><textarea cols="100" rows="10" th:field="*{description}"></textarea></td>
+            </tr>
+            <tr>
+                <td>File</td>
+                <td><input name="file" type="file"></input></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Submit"></td>
+            </tr>
+            <tr>
+                <td>* (max 8000 characters)</td>
+            </tr>
+            <tr>
 					<span th:each="tag : ${tags}">
-						<input type="checkbox" th:value="${tag.tag}" th:name="tagsCheckbox">
+						<input th:name="tagsCheckbox" th:value="${tag.tag}" type="checkbox">
 						<label th:text="${tag.tag}"></label>
 					</span>
-				</tr>
-			</table>
-		</form>
-	</div>
+            </tr>
+        </table>
+    </form>
+</div>
 </body>
 </html>

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UserUsernameValidator implements ConstraintValidator<UserUsername ,String> {
+public class UserUsernameValidator implements ConstraintValidator<UserUsername, String> {
 
     @Autowired
     private UserService userService;

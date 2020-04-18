@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html layout:decorate="~{layouts/main-layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main-layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
     <title>Blog - Change User Password Page</title>
@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="content">
     <h1>Change User Password</h1>
-    <form th:action="@{'/admin/users/'+${username}+'/edit/save'}" method="post" th:object="${user}">
+    <form method="post" th:action="@{'/admin/users/'+${username}+'/edit/save'}" th:object="${user}">
         <table>
             <tr>
                 <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
@@ -18,11 +18,11 @@
             </tr>
             <tr>
                 <td>New Password:</td>
-                <td><input type="password" th:field="*{password}"/></td>
+                <td><input th:field="*{password}" type="password"/></td>
             </tr>
             <tr>
                 <td>Confirm New Password:</td>
-                <td><input type="password" th:field="*{matchingPassword}"/></td>
+                <td><input th:field="*{matchingPassword}" type="password"/></td>
             </tr>
             <tr>
                 <td><input type="submit" value="Submit"></td>

@@ -20,159 +20,158 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class BlogController {
-	
-	@Autowired
-	private PostService postService;
-	
-	@Autowired
-	private CommentService commentService;
 
-	@Autowired
-	private UserService userService;
-	
-	@RequestMapping(value="/")
-	public String index() {
-		return "redirect:/page/1";
-	}
-	
-	@RequestMapping(value="/page/{page}")
-	public String listPostsByPage(@PathVariable int page, Model theModel, @RequestParam(required = false, name = "q") String q) {
-		int postsOnOnePage = 10, pages;
-		List<Post> posts;
-		if ((q == null) || (StringUtils.isBlank(q))) {
-			posts = postService.getPostsByPage(page, postsOnOnePage);
-			pages = (int) Math.ceil((double) postService.getNumberOfAllPosts() / postsOnOnePage);
-		} else {
-			posts = postService.getPostsByPageAndSearch(page, postsOnOnePage, q);
-			pages = (int) Math.ceil((double) postService.getNumberOfAllSearchedPosts(q) / postsOnOnePage);
-		}
-		if (pages == 0) {
-			pages++;
-		}
-		List<Tag> tags = postService.getTags();
-		theModel.addAttribute("tags", tags);
-		theModel.addAttribute("posts", posts);
-		theModel.addAttribute("pages", pages);
-		return "list_posts";
-	}
-	
-	@RequestMapping(value="/post/{postId}")
-	public String detailsPost(@PathVariable int postId, Model theModel) {
-		Post post = postService.getPost(postId);
-		List<Comment> comments = commentService.getComments(postId);
-		Comment comment = new Comment();
-		List<Tag> tags = postService.getPostTags(postId);
-		theModel.addAttribute("tags", tags);
-		theModel.addAttribute("post", post);
-		theModel.addAttribute("comments", comments);
-		theModel.addAttribute("comment", comment);
-		return "post_details";
-	}
-	
-	@RequestMapping(value="/post/{postId}/comment/add")
-	public String saveComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult theBindingResult, @PathVariable int postId, Model theModel) {
-		if (theBindingResult.hasErrors()){
-			Post post = postService.getPost(postId);
-			List<Comment> comments = commentService.getComments(postId);
-			theModel.addAttribute("post", post);
-			theModel.addAttribute("comments", comments);
-			theModel.addAttribute("comment", comment);
-			return "post_details";
-		} else {
-			commentService.saveComment(postId, comment);
-			return "redirect:/post/{postId}";
-		}
-	}
-	
-	@RequestMapping(value="/post/{postId}/delete")
-	public String deletePost(@PathVariable int postId) {
-		postService.deletePost(postId);
-		return "redirect:/";
-	}
-	
-	@RequestMapping(value="/post/form")
-	public String formPost(Model theModel) {
-		Post post = new Post();
-		List<Tag> tags = postService.getTags();
-		theModel.addAttribute("post", post);
-		theModel.addAttribute("tags", tags);
-		return "post-form";
-	}
-	
-	@RequestMapping(value="/post/save")
-	public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult theBindingResult,
-						   @RequestParam("file") MultipartFile file, @RequestParam(value = "tagsCheckbox", required = false) String[] tags) throws IOException {
-		// TODO: 17.04.2020 handle request tags from checkboxes
-		if (theBindingResult.hasErrors()){
-			return "post-form";
-		} else {
-			postService.savePost(post, file);
-			return "redirect:/";
-		}
-	}
-	
-	@RequestMapping(value="/post/{postId}/update")
-	public String updatePost(Model theModel, @PathVariable int postId) {
-		Post post = postService.getPost(postId);
-		theModel.addAttribute("post", post);
-		return "post-form";
-	}
+    @Autowired
+    private PostService postService;
 
-	@RequestMapping(value="/admin/users")
-	public String listUsers(Model theModel) {
-		List<List> result = userService.getUsers();
-		List<User> users = result.get(0);
-		List<String> auth = result.get(1);
-		theModel.addAttribute("users", users);
-		theModel.addAttribute("auth", auth);
-		return "list_users";
-	}
+    @Autowired
+    private CommentService commentService;
 
-	@RequestMapping(value="/admin/users/{username}/delete")
-	public String deleteUser(@PathVariable String username) {
-		userService.deleteUser(username);
-		return "redirect:/";
-	}
+    @Autowired
+    private UserService userService;
 
-	@RequestMapping(value="/admin/users/{username}/edit")
-	public String updateUserPassword(Model theModel, @PathVariable String username) {
-		User user = userService.getUser(username);
-		theModel.addAttribute("user", user);
-		return "user-form";
-	}
+    @RequestMapping(value = "/")
+    public String index() {
+        return "redirect:/page/1";
+    }
 
-	@RequestMapping(value = "/admin/users/{username}/edit/save")
-	public String saveUpdatedUserPassword(@Validated({Group2.class}) @ModelAttribute("user") User user, BindingResult theBindingResult, @PathVariable String username) {
-		if (theBindingResult.hasErrors()){
-			return "user-form";
-		} else {
-			userService.saveUpdatedUserPassword(user, username);
-			return "redirect:/admin/users";
-		}
-	}
+    @RequestMapping(value = "/page/{page}")
+    public String listPostsByPage(@PathVariable int page, Model theModel, @RequestParam(required = false, name = "q") String q) {
+        int postsOnOnePage = 10, pages;
+        List<Post> posts;
+        if ((q == null) || (StringUtils.isBlank(q))) {
+            posts = postService.getPostsByPage(page, postsOnOnePage);
+            pages = (int) Math.ceil((double) postService.getNumberOfAllPosts() / postsOnOnePage);
+        } else {
+            posts = postService.getPostsByPageAndSearch(page, postsOnOnePage, q);
+            pages = (int) Math.ceil((double) postService.getNumberOfAllSearchedPosts(q) / postsOnOnePage);
+        }
+        if (pages == 0) {
+            pages++;
+        }
+        List<Tag> tags = postService.getTags();
+        theModel.addAttribute("tags", tags);
+        theModel.addAttribute("posts", posts);
+        theModel.addAttribute("pages", pages);
+        return "list_posts";
+    }
 
-	@RequestMapping(value = "/admin/users/{username}/changeRole")
-	public String changeUserRole(@PathVariable String username, Model theModel){
-		String userRole = userService.getUserRole(username);
-		String[] roleTypes = {"USER", "ADMIN"};
-		theModel.addAttribute("roleTypes", roleTypes);
-		theModel.addAttribute("userRole", userRole);
-		return "user-role-form";
-	}
+    @RequestMapping(value = "/post/{postId}")
+    public String detailsPost(@PathVariable int postId, Model theModel) {
+        Post post = postService.getPost(postId);
+        List<Comment> comments = commentService.getComments(postId);
+        Comment comment = new Comment();
+        List<Tag> tags = postService.getPostTags(postId);
+        theModel.addAttribute("tags", tags);
+        theModel.addAttribute("post", post);
+        theModel.addAttribute("comments", comments);
+        theModel.addAttribute("comment", comment);
+        return "post_details";
+    }
 
-	@RequestMapping(value = "/admin/users/{username}/changeRole/save")
-	public String saveChangedUserRole(@PathVariable String username, @RequestParam("role") String role) {
-		String userRole = userService.getUserRole(username);
-		if (!role.equals(userRole)){
-			userService.saveChangedUserRole(username, role);
-			if (userRole.equals("ADMIN")){
-				SecurityContextHolder.clearContext();
-			}
-		}
-		return "redirect:/admin/users";
-		}
+    @RequestMapping(value = "/post/{postId}/comment/add")
+    public String saveComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult theBindingResult, @PathVariable int postId, Model theModel) {
+        if (theBindingResult.hasErrors()) {
+            Post post = postService.getPost(postId);
+            List<Comment> comments = commentService.getComments(postId);
+            theModel.addAttribute("post", post);
+            theModel.addAttribute("comments", comments);
+            theModel.addAttribute("comment", comment);
+            return "post_details";
+        } else {
+            commentService.saveComment(postId, comment);
+            return "redirect:/post/{postId}";
+        }
+    }
+
+    @RequestMapping(value = "/post/{postId}/delete")
+    public String deletePost(@PathVariable int postId) {
+        postService.deletePost(postId);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/post/form")
+    public String formPost(Model theModel) {
+        Post post = new Post();
+        List<Tag> tags = postService.getTags();
+        theModel.addAttribute("post", post);
+        theModel.addAttribute("tags", tags);
+        return "post-form";
+    }
+
+    @RequestMapping(value = "/post/save")
+    public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult theBindingResult,
+                           @RequestParam("file") MultipartFile file, @RequestParam(value = "tagsCheckbox", required = false) String[] tags) throws IOException {
+        // TODO: 17.04.2020 handle request tags from checkboxes
+        if (theBindingResult.hasErrors()) {
+            return "post-form";
+        } else {
+            postService.savePost(post, file);
+            return "redirect:/";
+        }
+    }
+
+    @RequestMapping(value = "/post/{postId}/update")
+    public String updatePost(Model theModel, @PathVariable int postId) {
+        Post post = postService.getPost(postId);
+        theModel.addAttribute("post", post);
+        return "post-form";
+    }
+
+    @RequestMapping(value = "/admin/users")
+    public String listUsers(Model theModel) {
+        List<List> result = userService.getUsers();
+        List<User> users = result.get(0);
+        List<String> auth = result.get(1);
+        theModel.addAttribute("users", users);
+        theModel.addAttribute("auth", auth);
+        return "list_users";
+    }
+
+    @RequestMapping(value = "/admin/users/{username}/delete")
+    public String deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/admin/users/{username}/edit")
+    public String updateUserPassword(Model theModel, @PathVariable String username) {
+        User user = userService.getUser(username);
+        theModel.addAttribute("user", user);
+        return "user-form";
+    }
+
+    @RequestMapping(value = "/admin/users/{username}/edit/save")
+    public String saveUpdatedUserPassword(@Validated({Group2.class}) @ModelAttribute("user") User user, BindingResult theBindingResult, @PathVariable String username) {
+        if (theBindingResult.hasErrors()) {
+            return "user-form";
+        } else {
+            userService.saveUpdatedUserPassword(user, username);
+            return "redirect:/admin/users";
+        }
+    }
+
+    @RequestMapping(value = "/admin/users/{username}/changeRole")
+    public String changeUserRole(@PathVariable String username, Model theModel) {
+        String userRole = userService.getUserRole(username);
+        String[] roleTypes = {"USER", "ADMIN"};
+        theModel.addAttribute("roleTypes", roleTypes);
+        theModel.addAttribute("userRole", userRole);
+        return "user-role-form";
+    }
+
+    @RequestMapping(value = "/admin/users/{username}/changeRole/save")
+    public String saveChangedUserRole(@PathVariable String username, @RequestParam("role") String role) {
+        String userRole = userService.getUserRole(username);
+        if (!role.equals(userRole)) {
+            userService.saveChangedUserRole(username, role);
+            if (userRole.equals("ADMIN")) {
+                SecurityContextHolder.clearContext();
+            }
+        }
+        return "redirect:/admin/users";
+    }
 }

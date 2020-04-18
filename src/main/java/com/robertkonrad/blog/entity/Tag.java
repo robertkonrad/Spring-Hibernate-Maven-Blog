@@ -20,7 +20,7 @@ public class Tag {
     @OneToMany(mappedBy = "post")
     private Set<PostTag> post;
 
-    public Tag(){
+    public Tag() {
 
     }
 

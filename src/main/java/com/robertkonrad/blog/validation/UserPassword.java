@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Constraint(validatedBy = UserPasswordValidator.class)
-@Target( {ElementType.FIELD, ElementType.METHOD} )
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserPassword {
     public String value() default "";
