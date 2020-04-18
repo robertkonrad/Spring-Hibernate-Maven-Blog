@@ -89,6 +89,7 @@ public class BlogController {
 
     @RequestMapping(value = "/post/{postId}/delete")
     public String deletePost(@PathVariable int postId) {
+        // TODO: 18.04.2020 handle tag system 
         postService.deletePost(postId);
         return "redirect:/";
     }
@@ -104,12 +105,13 @@ public class BlogController {
 
     @RequestMapping(value = "/post/save")
     public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult theBindingResult,
-                           @RequestParam("file") MultipartFile file, @RequestParam(value = "tagsCheckbox", required = false) String[] tags) throws IOException {
-        // TODO: 17.04.2020 handle request tags from checkboxes
+                           @RequestParam("file") MultipartFile file, @RequestParam(value = "tagsCheckbox", required = false, defaultValue = "") List<String> tags) throws IOException {
+        // TODO: 18.04.2020 handle tag system when update
         if (theBindingResult.hasErrors()) {
             return "post-form";
         } else {
-            postService.savePost(post, file);
+            int postId = postService.savePost(post, file);
+            postService.savePostTags(postId, tags);
             return "redirect:/";
         }
     }
@@ -117,7 +119,11 @@ public class BlogController {
     @RequestMapping(value = "/post/{postId}/update")
     public String updatePost(Model theModel, @PathVariable int postId) {
         Post post = postService.getPost(postId);
+        List<Tag> tags = postService.getTags();
+        List<Tag> currentTags = postService.getPostTags(postId);
         theModel.addAttribute("post", post);
+        theModel.addAttribute("tags", tags);
+        theModel.addAttribute("currentTags", currentTags);
         return "post-form";
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 public interface PostService {
     public void deletePost(int postId);
 
-    public void savePost(Post post, MultipartFile file) throws IOException;
+    public int savePost(Post post, MultipartFile file) throws IOException;
 
     public Post getPost(int postId);
 
@@ -25,4 +25,6 @@ public interface PostService {
     public List<Tag> getTags();
 
     public List<Tag> getPostTags(int postId);
+
+    public void savePostTags(int postId, List<String> tags);
 }

@@ -1,6 +1,7 @@
 package com.robertkonrad.blog.dao;
 
 import com.robertkonrad.blog.entity.Post;
+import com.robertkonrad.blog.entity.PostTag;
 import com.robertkonrad.blog.entity.Tag;
 import com.robertkonrad.blog.entity.User;
 import org.hibernate.Session;
@@ -41,7 +42,7 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public void savePost(Post post, MultipartFile file) {
+    public int savePost(Post post, MultipartFile file) {
         Session session = entityManager.unwrap(Session.class);
         if (post.getId() == 0) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -94,14 +95,14 @@ public class PostDAOImpl implements PostDAO {
                 post.setImage(orginalPost.getImage());
             }
         }
-        session.merge(post);
+        Post managedEntity = (Post) session.merge(post);
+        return managedEntity.getId();
     }
 
     @Override
     public Post getPost(int postId) {
         Session session = entityManager.unwrap(Session.class);
-        Post post = session.get(Post.class, postId);
-        return post;
+        return session.get(Post.class, postId);
     }
 
     @Override
@@ -113,18 +114,16 @@ public class PostDAOImpl implements PostDAO {
         } else {
             minRowNum = (page - 1) * postsOnOnePage;
         }
-        List<Post> posts = session.createQuery("FROM Post", Post.class)
+        return session.createQuery("FROM Post", Post.class)
                 .setFirstResult(minRowNum).setMaxResults(postsOnOnePage)
                 .getResultList();
-        return posts;
     }
 
     @Override
     public int getNumberOfAllPosts() {
         Session session = entityManager.unwrap(Session.class);
         List<Post> posts = session.createQuery("FROM Post", Post.class).getResultList();
-        int numberOfAllPosts = posts.size();
-        return numberOfAllPosts;
+        return posts.size();
     }
 
     @Override
@@ -157,22 +156,52 @@ public class PostDAOImpl implements PostDAO {
         Session session = entityManager.unwrap(Session.class);
         List<Post> posts = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','" + q + "','%')) " +
                 "or lower(p.description) like lower(concat('%','" + q + "','%'))", Post.class).getResultList();
-        int numberOfAllSearchedPosts = posts.size();
-        return numberOfAllSearchedPosts;
+        return posts.size();
     }
 
     @Override
     public List<Tag> getTags() {
         Session session = entityManager.unwrap(Session.class);
-        List<Tag> tags = session.createQuery("FROM Tag", Tag.class).getResultList();
-        return tags;
+        return session.createQuery("FROM Tag", Tag.class).getResultList();
     }
 
     @Override
     public List<Tag> getPostTags(int postId) {
         Session session = entityManager.unwrap(Session.class);
-        List<Tag> tags = session.createQuery("From Tag t WHERE t.tag in (SELECT pt.tag FROM PostTag pt WHERE pt.post = '" + postId + "')", Tag.class).getResultList();
-        return tags;
+        return session.createQuery("From Tag t WHERE t.tag in (SELECT pt.tag FROM PostTag pt WHERE pt.post = '" + postId + "')", Tag.class).getResultList();
+    }
+
+    @Override
+    public void savePostTags(int postId, List<String> tags) {
+        Session session = entityManager.unwrap(Session.class);
+        Post post = session.get(Post.class, postId);
+        List<Tag> currentTags = getPostTags(postId);
+        if (currentTags.isEmpty()) {
+            for (String tag : tags) {
+                Tag tag_temp = session.get(Tag.class, tag);
+                PostTag postTag = new PostTag();
+                postTag.setPost(post);
+                postTag.setTag(tag_temp);
+                session.save(postTag);
+            }
+        } else {
+            for (String tag : tags) {
+                List<PostTag> postTagQ = session.createQuery("FROM PostTag pt WHERE pt.tag = '" + tag + "' and pt.post = '" + postId + "'", PostTag.class).getResultList();
+                if (postTagQ.isEmpty()) {
+                    Tag tag_temp = session.get(Tag.class, tag);
+                    PostTag postTag = new PostTag();
+                    postTag.setPost(post);
+                    postTag.setTag(tag_temp);
+                    session.save(postTag);
+                }
+            }
+            for (Tag currentTag : currentTags) {
+                if (!tags.contains(currentTag.getTag())) {
+                    PostTag postTag = session.createQuery("FROM PostTag pt WHERE pt.tag = '" + currentTag.getTag() + "' and pt.post = '" + postId + "'", PostTag.class).getSingleResult();
+                    session.delete(postTag);
+                }
+            }
+        }
     }
 
 }

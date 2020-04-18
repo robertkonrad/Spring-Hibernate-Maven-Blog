@@ -19,4 +19,46 @@ public class PostTag {
     @JoinColumn(name = "tag")
     private Tag tag;
 
+    public PostTag() {
+
+    }
+
+    public PostTag(int id, Post post, Tag tag) {
+        this.id = id;
+        this.post = post;
+        this.tag = tag;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    @Override
+    public String toString() {
+        return "PostTag{" +
+                "id=" + id +
+                ", post=" + post +
+                ", tag=" + tag +
+                '}';
+    }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface PostDAO {
     public void deletePost(int postId);
 
-    public void savePost(Post post, MultipartFile file);
+    public int savePost(Post post, MultipartFile file);
 
     public Post getPost(int postId);
 
@@ -24,4 +24,6 @@ public interface PostDAO {
     public List<Tag> getTags();
 
     public List<Tag> getPostTags(int postId);
+
+    public void savePostTags(int postId, List<String> tags);
 }

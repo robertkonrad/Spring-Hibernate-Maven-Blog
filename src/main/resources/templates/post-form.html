@@ -38,7 +38,8 @@
             </tr>
             <tr>
 					<span th:each="tag : ${tags}">
-						<input th:name="tagsCheckbox" th:value="${tag.tag}" type="checkbox">
+						<input th:name="tagsCheckbox" th:value="${tag.tag}" type="checkbox"
+                               th:checked="${currentTags != null and !currentTags.empty} ? ${#lists.contains(currentTags, tag)}">
 						<label th:text="${tag.tag}"></label>
 					</span>
             </tr>

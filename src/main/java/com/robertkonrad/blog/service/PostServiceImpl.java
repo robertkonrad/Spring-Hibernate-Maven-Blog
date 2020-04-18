@@ -25,8 +25,8 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void savePost(Post post, MultipartFile file) throws IOException {
-        postDAO.savePost(post, file);
+    public int savePost(Post post, MultipartFile file) throws IOException {
+        return postDAO.savePost(post, file);
     }
 
     @Transactional
@@ -69,6 +69,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Tag> getPostTags(int postId) {
         return postDAO.getPostTags(postId);
+    }
+
+    @Transactional
+    @Override
+    public void savePostTags(int postId, List<String> tags) {
+        postDAO.savePostTags(postId, tags);
     }
 
 }
