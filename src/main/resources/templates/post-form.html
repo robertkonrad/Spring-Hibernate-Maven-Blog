@@ -27,6 +27,16 @@
                 <td><textarea cols="100" rows="10" th:field="*{description}"></textarea></td>
             </tr>
             <tr>
+                <td>Tags:</td>
+                <td>
+					<span th:each="tag : ${tags}">
+						<input th:name="tagsCheckbox" th:value="${tag.tag}" type="checkbox"
+                               th:checked="${currentTags != null and !currentTags.empty} ? ${#lists.contains(currentTags, tag)}">
+						<label th:text="${tag.tag}"></label>
+					</span>
+                </td>
+            </tr>
+            <tr>
                 <td>File</td>
                 <td><input name="file" type="file"></input></td>
             </tr>
@@ -35,13 +45,6 @@
             </tr>
             <tr>
                 <td>* (max 8000 characters)</td>
-            </tr>
-            <tr>
-					<span th:each="tag : ${tags}">
-						<input th:name="tagsCheckbox" th:value="${tag.tag}" type="checkbox"
-                               th:checked="${currentTags != null and !currentTags.empty} ? ${#lists.contains(currentTags, tag)}">
-						<label th:text="${tag.tag}"></label>
-					</span>
             </tr>
         </table>
     </form>

@@ -33,6 +33,10 @@ public class PostDAOImpl implements PostDAO {
     public void deletePost(int postId) {
         Session session = entityManager.unwrap(Session.class);
         Post post = session.get(Post.class, postId);
+        List<PostTag> postTags = session.createQuery("FROM PostTag pt WHERE pt.post = '"+ postId + "'", PostTag.class).getResultList();
+        for (PostTag pt : postTags){
+            session.delete(pt);
+        }
         if (!post.getImage().equals("")) {
             String folder = context.getRealPath("/image/");
             File file = new File(folder + post.getImage());
