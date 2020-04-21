@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/main-layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Blog - Create Tag Page</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Create Tag</h1>
+    <form method="post" th:action="@{/admin/tags/create/save}" th:object="${tag}">
+        <label for="tag">Tag Name:</label>
+        <input id="tag" name="tag" type="text">
+        <p><input type="submit" value="Submit"></p>
+    </form>
+</div>
+</body>
+</html>

@@ -79,3 +79,7 @@
     margin: auto;
     display: table;
 }
+
+.tags_button {
+    margin-bottom: 10px;
+}

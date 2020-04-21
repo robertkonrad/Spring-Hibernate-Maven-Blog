@@ -3,6 +3,7 @@ package com.robertkonrad.blog.controller;
 import com.robertkonrad.blog.entity.*;
 import com.robertkonrad.blog.service.CommentService;
 import com.robertkonrad.blog.service.PostService;
+import com.robertkonrad.blog.service.TagService;
 import com.robertkonrad.blog.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class BlogController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TagService tagService;
+
     @RequestMapping(value = "/")
     public String index() {
         return "redirect:/page/1";
@@ -52,7 +56,7 @@ public class BlogController {
         if (pages == 0) {
             pages++;
         }
-        List<Tag> tags = postService.getTags();
+        List<Tag> tags = tagService.getTags();
         theModel.addAttribute("tags", tags);
         theModel.addAttribute("posts", posts);
         theModel.addAttribute("pages", pages);
@@ -64,7 +68,7 @@ public class BlogController {
         Post post = postService.getPost(postId);
         List<Comment> comments = commentService.getComments(postId);
         Comment comment = new Comment();
-        List<Tag> tags = postService.getPostTags(postId);
+        List<Tag> tags = tagService.getPostTags(postId);
         theModel.addAttribute("tags", tags);
         theModel.addAttribute("post", post);
         theModel.addAttribute("comments", comments);
@@ -96,7 +100,7 @@ public class BlogController {
     @RequestMapping(value = "/post/form")
     public String formPost(Model theModel) {
         Post post = new Post();
-        List<Tag> tags = postService.getTags();
+        List<Tag> tags = tagService.getTags();
         theModel.addAttribute("post", post);
         theModel.addAttribute("tags", tags);
         return "post-form";
@@ -109,7 +113,7 @@ public class BlogController {
             return "post-form";
         } else {
             int postId = postService.savePost(post, file);
-            postService.savePostTags(postId, tags);
+            tagService.savePostTags(postId, tags);
             return "redirect:/";
         }
     }
@@ -117,8 +121,8 @@ public class BlogController {
     @RequestMapping(value = "/post/{postId}/update")
     public String updatePost(Model theModel, @PathVariable int postId) {
         Post post = postService.getPost(postId);
-        List<Tag> tags = postService.getTags();
-        List<Tag> currentTags = postService.getPostTags(postId);
+        List<Tag> tags = tagService.getTags();
+        List<Tag> currentTags = tagService.getPostTags(postId);
         theModel.addAttribute("post", post);
         theModel.addAttribute("tags", tags);
         theModel.addAttribute("currentTags", currentTags);
@@ -178,4 +182,31 @@ public class BlogController {
         }
         return "redirect:/admin/users";
     }
+
+    @RequestMapping(value = "/admin/tags")
+    public String listTags(Model theModel) {
+        List<Tag> tags = tagService.getTags();
+        theModel.addAttribute("tags", tags);
+        return "list_tags";
+    }
+
+    @RequestMapping(value = "/admin/tags/{tag}/delete")
+    public String deleteTag(@PathVariable String tag) {
+        tagService.deleteTag(tag);
+        return "redirect:/admin/tags";
+    }
+
+    @RequestMapping(value = "/admin/tags/create")
+    public String formTag(Model theModel) {
+        Tag tag = new Tag();
+        theModel.addAttribute("tag", tag);
+        return "tag-form";
+    }
+
+    @RequestMapping(value = "/admin/tags/create/save")
+    public String saveTag(@Valid @ModelAttribute("tag") Tag tag) {
+        tagService.saveTag(tag);
+        return "redirect:/admin/tags";
+    }
+
 }

@@ -2,7 +2,6 @@ package com.robertkonrad.blog.service;
 
 import com.robertkonrad.blog.dao.PostDAO;
 import com.robertkonrad.blog.entity.Post;
-import com.robertkonrad.blog.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
-
     @Autowired
     private PostDAO postDAO;
 
@@ -58,23 +56,4 @@ public class PostServiceImpl implements PostService {
     public int getNumberOfAllSearchedPosts(String q) {
         return postDAO.getNumberOfAllSearchedPosts(q);
     }
-
-    @Transactional
-    @Override
-    public List<Tag> getTags() {
-        return postDAO.getTags();
-    }
-
-    @Transactional
-    @Override
-    public List<Tag> getPostTags(int postId) {
-        return postDAO.getPostTags(postId);
-    }
-
-    @Transactional
-    @Override
-    public void savePostTags(int postId, List<String> tags) {
-        postDAO.savePostTags(postId, tags);
-    }
-
 }

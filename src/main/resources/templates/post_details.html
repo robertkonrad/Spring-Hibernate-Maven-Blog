@@ -14,7 +14,8 @@
     <div class="container">
         <div class="row">
             <div class="col-4">
-                <img height="250" th:attr="src=@{'/image/'+${post.image}}" th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'"
+                <img height="250" th:attr="src=@{'/image/'+${post.image}}"
+                     th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'"
                      width="250"/>
                 <p th:style="${post.author.username == '*User not exist*' ? 'font-style: italic;' : ''}"
                    th:text="${post.author.username}"></p>
