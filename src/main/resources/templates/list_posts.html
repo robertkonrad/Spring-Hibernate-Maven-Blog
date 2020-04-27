@@ -29,7 +29,7 @@
             </svg>
         </a>
     </div>
-    <ul>
+    <ul th:if="${pages > 1}">
         <th:block th:each="i: ${#numbers.sequence(1, pages)}">
             <a th:href="${param.q != null} ? @{'/page/' + ${i}(q=${param.q[0]})} : @{'/page/' + ${i}}"
                th:style="${i} == ${page} ? 'color: black; font-weight: bold;' : ''"
@@ -39,6 +39,9 @@
     <div class="container">
         <div class="row">
             <div class="col-9">
+                <div th:if="${posts.isEmpty()}">
+                    <h3>There are no posts!</h3>
+                </div>
                 <div class="row" th:each="post : ${posts}">
                     <div class="col-4">
                         <img height="250" th:attr="src=@{'/image/'+${post.image}}"
@@ -58,15 +61,23 @@
                             <a class="btn btn-info" th:href="@{'/post/'+${post.id}+'/update'}">Update</a>
                         </div>
                     </div>
-                    <div class="col-5">
+                    <div class="col-7">
                         <div>
                             <p th:text="${post.title}"></p>
                         </div>
                         <div>
+                            <span>Created by: </span>
                             <span th:style="${post.author.username == '*User not exist*' ? 'font-style: italic;' : ''}"
                                   th:text="${post.author.username} + ' '"></span>
                             <span th:text="${post.createdDate}"></span>
                         </div>
+                        <div th:if="${post.lastModificatedBy != null}">
+                            <span>Last modificated by: </span>
+                            <span th:style="${post.lastModificatedBy.username == '*User not exist*' ? 'font-style: italic;' : ''}"
+                                  th:text="${post.lastModificatedBy.username} + ' '"></span>
+                            <span th:text="${post.lastModificated}"></span>
+                        </div>
+                        <br>
                         <div>
                             <p class="post-desc-overflow" th:text="${post.description}"></p>
                         </div>
@@ -76,7 +87,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-3" th:if="${!tags.isEmpty()}">
                 <h3>Tags</h3>
                 <span th:each="tag : ${tags}">
 						<a th:href="@{'/page/1?q='+${tag.tag}}" th:text="${tag.tag}"></a>
@@ -84,7 +95,7 @@
             </div>
         </div>
     </div>
-    <ul>
+    <ul th:if="${pages > 1}">
         <th:block th:each="i: ${#numbers.sequence(1, pages)}">
             <a th:href="${param.q != null} ? @{'/page/' + ${i}(q=${param.q[0]})} : @{'/page/' + ${i}}"
                th:style="${i} == ${page} ? 'color: black; font-weight: bold;' : ''"

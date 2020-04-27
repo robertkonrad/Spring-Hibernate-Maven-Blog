@@ -26,7 +26,7 @@
                 <td>Description*:</td>
                 <td><textarea cols="100" rows="10" th:field="*{description}"></textarea></td>
             </tr>
-            <tr>
+            <tr th:if="${!tags.isEmpty()}">
                 <td>Tags:</td>
                 <td>
 					<span th:each="tag : ${tags}">

@@ -33,6 +33,10 @@ public class Post {
     @JoinColumn(name = "author")
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "last_modified_by")
+    private User lastModificatedBy;
+
     @Column(name = "created_date")
     private Date createdDate;
 
@@ -52,13 +56,12 @@ public class Post {
 
     }
 
-    public Post(int id, @NotNull @Size(max = 100) String title, @NotNull @Size(max = 255) String description,
-                @NotNull User author, @NotNull Date createdDate, @NotNull Date lastModificated, String image) {
-        super();
+    public Post(int id, @NotNull @NotEmpty(message = "Title cannot be empty.") @Size(max = 100) String title, @NotNull @NotEmpty(message = "Description cannot be empty.") @Size(max = 8000) String description, User author, User lastModificatedBy, Date createdDate, Date lastModificated, String image) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.author = author;
+        this.lastModificatedBy = lastModificatedBy;
         this.createdDate = createdDate;
         this.lastModificated = lastModificated;
         this.image = image;
@@ -120,12 +123,25 @@ public class Post {
         this.image = image;
     }
 
-    @Override
-    public String toString() {
-        return "Post [id=" + id + ", title=" + title + ", description=" + description + ", author=" + author
-                + ", createdDate=" + createdDate + ", lastModificated=" + lastModificated + ", image="
-                + image + "]";
+    public User getLastModificatedBy() {
+        return lastModificatedBy;
     }
 
+    public void setLastModificatedBy(User lastModificatedBy) {
+        this.lastModificatedBy = lastModificatedBy;
+    }
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", author=" + author +
+                ", lastModificatedBy=" + lastModificatedBy +
+                ", createdDate=" + createdDate +
+                ", lastModificated=" + lastModificated +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

@@ -76,6 +76,9 @@ public class PostDAOImpl implements PostDAO {
             post.setCreatedDate(orginalPost.getCreatedDate());
             Date lastModificated = new Date();
             post.setLastModificated(lastModificated);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = session.createQuery("FROM User WHERE username='" + auth.getName() + "'", User.class).getSingleResult();
+            post.setLastModificatedBy(user);
             if (!file.isEmpty()) {
                 String folder = context.getRealPath("/image/");
                 Path path = Paths.get(folder + post.getTitle() + "-" + file.getOriginalFilename());

@@ -70,10 +70,11 @@ public class UserDAOImpl implements UserDAO {
             newUser.setPassword("$2y$12$1T1r/sx/gr3CHkwRMoQdH.B5jcQ65iAzy9JeSX/2f8KF4VxB5kKw6");
             newUser.setEnabled(0);
             newAuth.setAuthority("USER");
-            newAuth.setUser(newUser);
             session.save(newUser);
+            newAuth.setUser(newUser);
             session.save(newAuth);
         }
+        defaultUser = session.get(User.class, "*User not exist*");
         List<Post> posts = session.createQuery("FROM Post WHERE author='" + user.getUsername() + "'", Post.class).getResultList();
         for (Post post : posts) {
             session.createQuery("UPDATE Post SET author='" + defaultUser.getUsername() + "' WHERE id='" + post.getId() + "'").executeUpdate();
@@ -81,6 +82,10 @@ public class UserDAOImpl implements UserDAO {
         List<Comment> comments = session.createQuery("FROM Comment WHERE author='" + user.getUsername() + "'", Comment.class).getResultList();
         for (Comment comment : comments) {
             session.createQuery("UPDATE Comment SET author='" + defaultUser.getUsername() + "' WHERE id='" + comment.getId() + "'").executeUpdate();
+        }
+        List<Post> modifiedPosts = session.createQuery("FROM Post WHERE lastModificatedBy='" + user.getUsername() + "'", Post.class).getResultList();
+        for (Post modifiedPost : modifiedPosts) {
+            session.createQuery("UPDATE Post SET lastModificatedBy='" + defaultUser.getUsername() + "' WHERE id='" + modifiedPost.getId() + "'").executeUpdate();
         }
         session.delete(auth);
         session.delete(user);

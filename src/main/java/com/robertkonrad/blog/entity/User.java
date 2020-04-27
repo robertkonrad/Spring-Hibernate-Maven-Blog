@@ -45,6 +45,9 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "lastModificatedBy", cascade = CascadeType.ALL)
+    private List<Post> modificatedPosts;
+
     public User() {
 
     }

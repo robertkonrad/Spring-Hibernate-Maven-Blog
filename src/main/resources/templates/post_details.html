@@ -18,9 +18,11 @@
                      th:onerror="'this.src=\'' + @{/img/default.jpg} + '\';'"
                      width="250"/>
                 <p th:style="${post.author.username == '*User not exist*' ? 'font-style: italic;' : ''}"
-                   th:text="${post.author.username}"></p>
+                   th:text="${'Created by '+post.author.username}"></p>
                 <p th:text="${post.createdDate}"></p>
-                <p th:text="${post.lastModificated}"></p>
+                <p th:if="${post.lastModificatedBy != null}" th:style="${post.lastModificatedBy.username == '*User not exist*' ? 'font-style: italic;' : ''}"
+                   th:text="${'Last modificated by '+post.lastModificatedBy.username}"></p>
+                <p th:if="${post.lastModificatedBy != null}" th:text="${post.lastModificated}"></p>
                 <div sec:authorize="hasAuthority('ADMIN')">
                     <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"
                        sec:authorize="isAuthenticated()" th:href="@{'/post/'+${post.id}+'/delete'}">Delete</a>
