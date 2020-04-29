@@ -73,8 +73,8 @@ public class UserDAOImpl implements UserDAO {
             session.save(newUser);
             newAuth.setUser(newUser);
             session.save(newAuth);
+            defaultUser = session.get(User.class, "*User not exist*");
         }
-        defaultUser = session.get(User.class, "*User not exist*");
         List<Post> posts = session.createQuery("FROM Post WHERE author='" + user.getUsername() + "'", Post.class).getResultList();
         for (Post post : posts) {
             session.createQuery("UPDATE Post SET author='" + defaultUser.getUsername() + "' WHERE id='" + post.getId() + "'").executeUpdate();
