@@ -75,13 +75,4 @@ public class UserServiceTest {
         User user = userService.getUser("test");
         Assert.assertNull(user);
     }
-
-    @Test
-    public void saveUserTest() {
-        List<User> users = prepareData();
-        Assert.assertEquals(3, users.size());
-        User user = new User("test1", "password", 1);
-        users.add(user);
-        Assert.assertEquals(4, users.size());
-    }
 }
