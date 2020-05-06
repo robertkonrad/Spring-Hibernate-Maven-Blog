@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +95,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUser(String username) {
         Session session = entityManager.unwrap(Session.class);
-        User user = session.createQuery("FROM User WHERE username='" + username + "'", User.class).getSingleResult();
-        return user;
+        try {
+            User user = session.createQuery("FROM User WHERE username='" + username + "'", User.class).getSingleResult();
+            return user;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

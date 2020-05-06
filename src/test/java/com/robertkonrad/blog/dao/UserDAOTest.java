@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,6 +19,9 @@ public class UserDAOTest {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     @Test
@@ -57,6 +61,15 @@ public class UserDAOTest {
     @Transactional
     @Test
     @Rollback
+    public void getUserRoleTest() {
+        User user = new User("__ss767test6667ss__", "password", 1);
+        userDAO.saveUser(user);
+        Assert.assertEquals("USER", userDAO.getUserRole(user.getUsername()));
+    }
+
+    @Transactional
+    @Test
+    @Rollback
     public void saveChangedUserRoleTest() {
         User user = new User("__ss767test6667ss__", "password", 1);
         userDAO.saveUser(user);
@@ -65,4 +78,40 @@ public class UserDAOTest {
         Assert.assertEquals("ADMIN", userDAO.getUserRole(user.getUsername()));
     }
 
+    @Transactional
+    @Test
+    @Rollback
+    public void saveUpdatedUserPasswordTest() {
+        User user = new User("__ss767test6667ss__", "password", 1);
+        userDAO.saveUser(user);
+        Assert.assertEquals(true, passwordEncoder.matches("password", userDAO.getUser(user.getUsername()).getPassword()));
+        user.setPassword("password2");
+        userDAO.saveUpdatedUserPassword(userDAO.getUser(user.getUsername()), user.getUsername());
+        Assert.assertNotEquals(true, passwordEncoder.matches("password", userDAO.getUser(user.getUsername()).getPassword()));
+        Assert.assertEquals(true, passwordEncoder.matches("password2", userDAO.getUser(user.getUsername()).getPassword()));
+    }
+
+    @Transactional
+    @Test
+    @Rollback
+    public void usernameAvailableTest() {
+        User user = new User("__ss767test6667ss__", "password", 1);
+        userDAO.saveUser(user);
+        Assert.assertEquals(false, userDAO.usernameAvailable(user.getUsername()));
+        User fakeUser = userDAO.getUser("__ss767test6667sz__");
+        if (fakeUser == null) {
+            Assert.assertEquals(true, userDAO.usernameAvailable("__ss767test6667sz__"));
+        }
+    }
+
+    @Transactional
+    @Test
+    @Rollback
+    public void deleteUserTest() {
+        User user = new User("__ss767test6667ss__", "password", 1);
+        userDAO.saveUser(user);
+        Assert.assertNotEquals(null, userDAO.getUser(user.getUsername()));
+        userDAO.deleteUser(user.getUsername());
+        Assert.assertEquals(null, userDAO.getUser(user.getUsername()));
+    }
 }
