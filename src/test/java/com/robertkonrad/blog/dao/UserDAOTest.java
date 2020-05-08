@@ -38,15 +38,15 @@ public class UserDAOTest {
     @Test
     @Rollback
     public void getUsersTest() {
-        List<List> users_before = userDAO.getUsers();
+        List<List> usersBefore = userDAO.getUsers();
         User user = new User("__ss767test6667ss__", "password", 1);
         User user2 = new User("__ss767test6667sz__", "password", 1);
         userDAO.saveUser(user);
         userDAO.saveUser(user2);
-        List<List> users_after = userDAO.getUsers();
-        Assert.assertEquals(users_after.get(0).size(), users_before.get(0).size() + 2);
-        Assert.assertEquals(users_before.get(0).size(), users_before.get(1).size());
-        Assert.assertEquals(users_after.get(0).size(), users_after.get(1).size());
+        List<List> usersAfter = userDAO.getUsers();
+        Assert.assertEquals(usersAfter.get(0).size(), usersBefore.get(0).size() + 2);
+        Assert.assertEquals(usersBefore.get(0).size(), usersBefore.get(1).size());
+        Assert.assertEquals(usersAfter.get(0).size(), usersAfter.get(1).size());
     }
 
     @Transactional

@@ -56,15 +56,10 @@ public class Post {
 
     }
 
-    public Post(int id, @NotNull @NotEmpty(message = "Title cannot be empty.") @Size(max = 100) String title, @NotNull @NotEmpty(message = "Description cannot be empty.") @Size(max = 8000) String description, User author, User lastModificatedBy, Date createdDate, Date lastModificated, String image) {
-        this.id = id;
+    public Post(@NotNull @NotEmpty(message = "Title cannot be empty.") @Size(max = 100) String title, @NotNull @NotEmpty(message = "Description cannot be empty.") @Size(max = 8000) String description, User author) {
         this.title = title;
         this.description = description;
         this.author = author;
-        this.lastModificatedBy = lastModificatedBy;
-        this.createdDate = createdDate;
-        this.lastModificated = lastModificated;
-        this.image = image;
     }
 
     public int getId() {

@@ -38,15 +38,8 @@ public class Comment {
 
     }
 
-    public Comment(int id, @NotNull @Size(max = 8000) String description, @NotNull Date createdDate,
-                   @NotNull Date lastModificated, @NotNull User author, @NotNull Post post) {
-        super();
-        this.id = id;
+    public Comment(@NotNull @Size(max = 8000) String description) {
         this.description = description;
-        this.createdDate = createdDate;
-        this.lastModificated = lastModificated;
-        this.author = author;
-        this.post = post;
     }
 
     public int getId() {

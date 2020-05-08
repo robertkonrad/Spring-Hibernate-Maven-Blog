@@ -23,8 +23,7 @@ public class PostTag {
 
     }
 
-    public PostTag(int id, Post post, Tag tag) {
-        this.id = id;
+    public PostTag(Post post, Tag tag) {
         this.post = post;
         this.tag = tag;
     }

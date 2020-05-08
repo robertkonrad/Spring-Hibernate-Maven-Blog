@@ -113,4 +113,5 @@ buildNumber.properties
 .flattened-pom.xml
 
 src/main/webapp/image/*
+src/main/webapp/imagetitle-
 !src/main/webapp/image/.gitkeep
