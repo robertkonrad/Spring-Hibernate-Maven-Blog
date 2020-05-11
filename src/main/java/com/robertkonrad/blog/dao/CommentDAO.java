@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface CommentDAO {
 
-    List<Comment> getComments(int postId);
+    public List<Comment> getComments(int postId);
 
-    void saveComment(int postId, Comment comment);
+    public void saveComment(int postId, Comment comment);
 
+    public void deleteComment(int commentId);
 }

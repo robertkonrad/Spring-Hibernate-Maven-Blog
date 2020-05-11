@@ -66,4 +66,23 @@ public class CommentDAOTest {
         commentDAO.saveComment(postId, comment1);
         Assert.assertNotEquals(0, comment1.getId());
     }
+
+    @Transactional
+    @Test
+    @Rollback
+    @WithMockUser(username = "__ss767test6667ss__")
+    public void deleteCommentTest() {
+        User user = new User("__ss767test6667ss__", "password", 1);
+        userDAO.saveUser(user);
+        Post post = new Post("title", "desc", userDAO.getUser(user.getUsername()));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "test.txt",
+                "Test".getBytes());
+        int postId = postDAO.savePost(post, mockMultipartFile);
+        Comment comment1 = new Comment("123");
+        commentDAO.saveComment(postId, comment1);
+        Assert.assertEquals(1, commentDAO.getComments(postId).size());
+        commentDAO.deleteComment(comment1.getId());
+        Assert.assertEquals(0, commentDAO.getComments(postId).size());
+    }
 }

@@ -41,4 +41,11 @@ public class CommentDAOImpl implements CommentDAO {
         session.save(comment);
     }
 
+    @Override
+    public void deleteComment(int commentId) {
+        Session session = entityManager.unwrap(Session.class);
+        Comment comment = session.get(Comment.class, commentId);
+        session.delete(comment);
+    }
+
 }

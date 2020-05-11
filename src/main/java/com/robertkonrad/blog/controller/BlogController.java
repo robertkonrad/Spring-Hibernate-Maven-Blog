@@ -91,6 +91,12 @@ public class BlogController {
         }
     }
 
+    @RequestMapping(value = "/post/{postId}/comment/{commentId}/delete")
+    public String deleteComment(@PathVariable int commentId) {
+        commentService.deleteComment(commentId);
+        return "redirect:/post/{postId}";
+    }
+
     @RequestMapping(value = "/post/{postId}/delete")
     public String deletePost(@PathVariable int postId) {
         postService.deletePost(postId);

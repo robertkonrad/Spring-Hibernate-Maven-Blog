@@ -28,4 +28,10 @@ public class CommentServiceImpl implements CommentService {
         commentDAO.saveComment(postId, comment);
     }
 
+    @Transactional
+    @Override
+    public void deleteComment(int commentId) {
+        commentDAO.deleteComment(commentId);
+    }
+
 }

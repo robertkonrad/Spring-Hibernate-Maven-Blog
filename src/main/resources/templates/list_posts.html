@@ -14,7 +14,7 @@
         <input th:name="q" th:value="${param.q != null} ? ${param.q[0]} : ''" type="text">
         <input th:value="Search" type="submit">
     </form>
-    <div class="search_results" th:if="${param.q != null and param.q[0] != ''}">
+    <div class="search-results" th:if="${param.q != null and param.q[0] != ''}">
         <span class="search_header" th:text="${param.q}"></span>
         <a th:href="@{/}">
             <svg class="bi bi-x-circle" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em"

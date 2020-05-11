@@ -75,11 +75,15 @@
     font-size: 3rem;
 }
 
-.search_results {
+.search-results {
     margin: auto;
     display: table;
 }
 
-.tags_button {
+.tags-button {
     margin-bottom: 10px;
+}
+
+.delete-comment {
+    color: red;
 }

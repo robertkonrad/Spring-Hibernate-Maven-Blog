@@ -20,7 +20,8 @@
                 <p th:style="${post.author.username == '*User not exist*' ? 'font-style: italic;' : ''}"
                    th:text="${'Created by '+post.author.username}"></p>
                 <p th:text="${post.createdDate}"></p>
-                <p th:if="${post.lastModificatedBy != null}" th:style="${post.lastModificatedBy.username == '*User not exist*' ? 'font-style: italic;' : ''}"
+                <p th:if="${post.lastModificatedBy != null}"
+                   th:style="${post.lastModificatedBy.username == '*User not exist*' ? 'font-style: italic;' : ''}"
                    th:text="${'Last modificated by '+post.lastModificatedBy.username}"></p>
                 <p th:if="${post.lastModificatedBy != null}" th:text="${post.lastModificated}"></p>
                 <div sec:authorize="hasAuthority('ADMIN')">
@@ -70,6 +71,12 @@
                     <span th:style="${comment.author.username == '*User not exist*' ? 'font-style: italic;' : ''}"
                           th:text="${comment.author.username} + ' '"></span>
                     <span th:text="${comment.createdDate}"></span>
+                    <a th:href="@{'/post/'+${postId}+'/comment/'+${comment.id}+'/delete'}"
+                       sec:authorize="hasAuthority('ADMIN')"><span class="delete-comment" th:text="Delete"></span></a>
+                    <a th:href="@{'/post/'+${postId}+'/comment/'+${comment.id}+'/delete'}"
+                       sec:authorize="hasAuthority('USER')"
+                       th:if="${comment.author.username} == ${#authentication.name}"><span class="delete-comment"
+                                                                                           th:text="Delete"></span></a>
                     <p class="comment-desc" th:text="${comment.description}"></p>
                 </div>
             </div>
