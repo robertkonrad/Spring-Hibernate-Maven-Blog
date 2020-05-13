@@ -114,4 +114,5 @@ buildNumber.properties
 
 src/main/webapp/image/*
 src/main/webapp/imagetitle-
+src/main/webapp/image__656title656___-
 !src/main/webapp/image/.gitkeep

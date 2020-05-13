@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
@@ -71,7 +72,7 @@ public class CommentDAOTest {
     @Test
     @Rollback
     @WithMockUser(username = "__ss767test6667ss__")
-    public void deleteCommentTest() {
+    public void deleteCommentTest() throws Exception {
         User user = new User("__ss767test6667ss__", "password", 1);
         userDAO.saveUser(user);
         Post post = new Post("title", "desc", userDAO.getUser(user.getUsername()));
