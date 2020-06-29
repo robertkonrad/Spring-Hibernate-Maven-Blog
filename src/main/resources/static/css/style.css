@@ -91,3 +91,15 @@
 .bi-arrow-left-short {
     font-size: 200%;
 }
+
+.post-image {
+    margin-bottom: 3px;
+}
+
+.post-panel {
+    text-align: center;
+}
+
+.delete-update-form {
+    display: inline;
+}

@@ -8,8 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class RegistrationController {
@@ -17,14 +18,14 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/user/form")
+    @GetMapping("/user/form")
     public String register_form(Model theModel) {
         User user = new User();
         theModel.addAttribute("user", user);
         return "register-form";
     }
 
-    @RequestMapping("/user/save")
+    @PostMapping("/user/save")
     public String save_user(@Validated(Group1.class) @ModelAttribute("user") User user, BindingResult theBindingResult) {
         if (theBindingResult.hasErrors()) {
             return "register-form";

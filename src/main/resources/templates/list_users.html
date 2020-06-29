@@ -22,11 +22,16 @@
             <td th:text="${user.username}"></td>
             <td th:text="${auth[__${iter.index}__]}"></td>
             <td>
-                <a class="btn btn-info" th:href="@{'/admin/users/'+${user.username}+'/edit'}">Change Password</a>
-                <a class="btn btn-info" th:href="@{'/admin/users/'+${user.username}+'/changeRole'}">Change Role</a>
-                <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"
-                   th:href="@{'/admin/users/'+${user.username}+'/delete'}"
-                   th:if="${auth[__${iter.index}__] != 'ADMIN'}">Delete</a>
+                <form class="delete-update-form" th:action="@{'/admin/users/' + ${user.username} + '/edit'}" th:method="put">
+                    <input class="btn btn-info" type="submit" value="Change Password">
+                </form>
+                <form class="delete-update-form" th:action="@{'/admin/users/' + ${user.username} + '/changeRole'}" th:method="put">
+                    <input class="btn btn-info" type="submit" value="Change Role">
+                </form>
+                <form class="delete-update-form" th:action="@{'/admin/users/' + ${user.username}}" th:method="delete" th:if="${auth[__${iter.index}__] != 'ADMIN'}">
+                    <input class="btn btn-danger" type="submit" value="Delete"
+                           onclick="return confirm('Are you sure you want to delete this user?');">
+                </form>
             </td>
         </tr>
         </tbody>

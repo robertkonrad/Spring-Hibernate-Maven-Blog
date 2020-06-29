@@ -14,7 +14,7 @@ public class Tag {
     @NotEmpty
     @Id
     @Size(max = 20)
-    @Column(name = "tag", length = 20)
+    @Column(name = "tag", length = 20, unique = true)
     private String tag;
 
     @OneToMany(mappedBy = "post")

@@ -21,8 +21,10 @@
         <tr th:each="tag : ${tags}">
             <td th:text="${tag.tag}"></td>
             <td>
-                <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"
-                   th:href="@{'/admin/tags/'+${tag.tag}+'/delete'}">Delete</a>
+                <form class="delete-update-form" th:action="@{'/admin/tags/' + ${tag.tag}}" th:method="delete">
+                    <input class="btn btn-danger" type="submit" value="Delete"
+                           onclick="return confirm('Are you sure you want to delete this tag?');">
+                </form>
             </td>
         </tr>
         </tbody>
