@@ -78,6 +78,8 @@ public class BlogController {
         if (theBindingResult.hasErrors()) {
             Post post = postService.getPost(postId);
             List<Comment> comments = commentService.getComments(postId);
+            List<Tag> tags = tagService.getPostTags(postId);
+			theModel.addAttribute("tags", tags);
             theModel.addAttribute("post", post);
             theModel.addAttribute("comments", comments);
             theModel.addAttribute("comment", comment);
