@@ -162,8 +162,18 @@ public class PostDAOImpl implements PostDAO {
     @Override
     public int getNumberOfAllSearchedPosts(String q) {
         Session session = entityManager.unwrap(Session.class);
-        List<Post> posts = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','" + q + "','%')) " +
-                "or lower(p.description) like lower(concat('%','" + q + "','%'))", Post.class).getResultList();
+        List<Post> posts = new ArrayList<>();
+        String[] split_q = q.split(" ");
+        for (String sq : split_q) {
+            List<Post> posts_temp = session.createQuery("FROM Post p WHERE lower(p.title) like lower(concat('%','" + sq + "','%')) " +
+                    "or lower(p.description) like lower(concat('%','" + sq + "','%')) or p.id in (SELECT pt.post FROM PostTag pt WHERE pt.tag='" + sq + "')", Post.class)
+                    .getResultList();
+            for (Post post : posts_temp) {
+                if (!posts.contains(post)) {
+                    posts.add(post);
+                }
+            }
+        }
         return posts.size();
     }
 }
